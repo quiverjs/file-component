@@ -6,6 +6,8 @@ var streamChannel = require('quiver-stream-channel')
 var should = require('should')
 var async = require('async')
 var pathUtil = require('path')
+var getLastModified = require('../lib/file-cache-validator').getFileLastModified
+var childProcess = require('child_process')
 
 var testDirectory = pathUtil.join(__dirname, '../lib')
 var testFileName1 = 'file-handler.js'
@@ -226,3 +228,44 @@ describe('test content type filter', function(callback) {
   })
 })
 
+var touchFile = function(filePath, callback) {
+  var proc = childProcess.spawn('touch', [filePath])
+  proc.on('exit', callback)
+}
+
+describe('test file cache validator', function(callback) {
+  it('should report cache invalid when file changes', function(callback) {
+    var testFile = pathUtil.join(__dirname, '/test-file.txt')
+
+    touchFile(testFile, function() {
+      getLastModified(testFile, function(err, lastModified) {
+        if(err) throw err
+
+        var config = { filePath: testFile }
+        fileHandler.createFileCacheValidator(config, function(err, validator) {
+          if(err) throw err
+
+          var args = { lastModified: lastModified }
+          validator(args, function(status) {
+            status.should.equal(304)
+
+            // modify the file after a bit of time gap
+            setTimeout(function() {
+              touchFile(testFile, function() {
+
+                // check validator a bit later after it receives update
+                setTimeout(function() {
+                  validator(args, function(status) {
+                    should.not.exist(status)
+
+                    callback()
+                  })
+                }, 100)
+              })
+            }, 100)
+          })
+        })
+      })
+    })
+  })
+})
