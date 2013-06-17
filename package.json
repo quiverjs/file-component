@@ -6,7 +6,7 @@
   },
   "name": "quiver-file-handler",
   "desription": "Create various filesystem-related stream handlers and filters",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/quiverjs/file-handler",
   "repository": {
     "url": "git@github.com:quiverjs/file-handler.git"

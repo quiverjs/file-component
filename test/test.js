@@ -41,7 +41,11 @@ var assertHandlerCreatesContent = function(originalContent, handler, args, callb
     function(err, resultStreamable) {
       if(err) throw err
 
-      assertSameContent(originalContent, resultStreamable.toStream(), callback)
+      resultStreamable.toStream(function(err, readStream) {
+        if(err) throw err
+
+        assertSameContent(originalContent, readStream, callback)
+      })
     })
 }
 
