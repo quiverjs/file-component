@@ -1,21 +1,21 @@
 
 'use strict'
 
-var fs = require('fs')
-var pathLib = require('path')
 var error = require('quiver-error').error
 var configLib = require('quiver-config')
 var fileStreamLib = require('quiver-file-stream')
 var handleableLib = require('quiver-handleable')
 
 var directoryHandlerBuilder = function(config, callback) {
-  var dirPath = config.dirPath
-
   var handler = function(args, callback) {
-    var path = args.path
-    var filePath = pathLib.join(dirPath, path)
+    var filePath = args.filePath
+    var fileStats = args.fileStats
 
-    fileStreamLib.createFileStreamable(filepath, callback)
+    if(!fileStats.isFile()) return callback(
+      error(404, 'path is not a file'))
+
+    callback(null, fileStreamLib.createFileStreamableWithStats(
+      filePath, fileStats))
   }
 
   callback(null, handler)
@@ -26,7 +26,7 @@ var directoryHandleableBuilder = function(config, callback) {
     config, 'quiver file directory stream handler')
 
   var dirCacheValidatorHandler = configLib.getStreamHandler(
-    config, 'quiver dir cache validator handler')
+    config, 'quiver file directory cache validator handler')
 
   var fileListPathHandler = configLib.getStreamHandler(
     config, 'quiver file list path handler')
@@ -52,16 +52,9 @@ var quiverComponents = [
     name: 'quiver file directory stream handler',
     type: 'simple handler',
     inputType: 'void',
-    outputType: 'streamable'
+    outputType: 'streamable',
     middlewares: [
-      'quiver sanitize path filter'
-    ],
-    configParam: [
-      {
-        key: 'dirPath',
-        type: 'string',
-        required: true
-      }
+      'quiver file stats filter',
     ],
     handlerBuilder: directoryHandlerBuilder
   },
@@ -75,7 +68,7 @@ var quiverComponents = [
         rebuild: true
       },
       {
-        handler: 'quiver dir cache validator handler',
+        handler: 'quiver file directory cache validator handler',
         type: 'stream handler',
         rebuild: true
       },

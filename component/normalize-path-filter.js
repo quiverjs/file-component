@@ -1,8 +1,10 @@
 
+'use strict'
+
 var pathLib = require('path')
 var filterLib = require('quiver-filter')
 
-var sanitizePathFilter = filterLib.argsFilter(function(args, callback) {
+var normalizePathFilter = filterLib.argsFilter(function(args, callback) {
   var path = args.path || '/'
 
   path = pathLib.join('/', path)
@@ -13,7 +15,7 @@ var sanitizePathFilter = filterLib.argsFilter(function(args, callback) {
 
 var quiverComponents = [
   {
-    name: 'quiver sanitize path filter',
+    name: 'quiver normalize path filter',
     type: 'stream filter',
     filter: sanitizePathFilter
   }
