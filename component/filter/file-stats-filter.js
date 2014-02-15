@@ -3,6 +3,7 @@
 
 var fs = require('fs')
 var pathLib = require('path')
+var error = require('quiver-error').error
 var filterLib = require('quiver-filter')
 
 var fileStatsFilter = filterLib.metaFilter(
@@ -18,7 +19,7 @@ var fileStatsFilter = filterLib.metaFilter(
         if(!exists) return callback(error(404, 'file not found'))
 
         fs.stat(filePath, function(err, fileStats) {
-          if(err) return callback(error(404, 'error reading file'))
+          if(err) return callback(err)
 
           args.filePath = filePath
           args.fileStats = fileStats

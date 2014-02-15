@@ -3,17 +3,23 @@
 
 var fs = require('fs')
 var error = require('quiver-error').error
-var fileStream = require('quiver-file-stream')
 var fileStreamLib = require('quiver-file-stream')
 
 var singleFileHandlerBuilder = function(config, callback) {
   var filePath = config.filePath
 
-  var handler = function(args, callback) {
-    fileStreamLib.createFileStream(filePath, callback)
-  }
+  fs.stat(filePath, function(err, fileStats) {
+    if(err) return callback(err)
 
-  callback(null, handler)
+    if(!fileStats.isFile()) return callback(
+      error(400, 'config file path is not a file'))
+
+    var handler = function(args, callback) {
+      fileStreamLib.createFileStreamable(filePath, callback)
+    }
+
+    callback(null, handler)
+  })
 }
 
 var singleFileHandleableBuilder = function(config, callback) {
@@ -27,12 +33,12 @@ var singleFileHandleableBuilder = function(config, callback) {
     toStreamHandler: function() {
       return fileHandler
     },
-    toCacheValidatorHandler: function() {
+    toEtagCacheValidatorHandler: function() {
       return fileCacheValidatorHandler
     }
   }
 
-  handleableLib.makeExtensible(handleable.toCacheValidatorHandler)
+  handleableLib.makeExtensible(handleable.toEtagCacheValidatorHandler)
 }
 
 var quiverComponents = [
@@ -40,7 +46,14 @@ var quiverComponents = [
     name: 'quiver single file stream handler',
     type: 'simple handler',
     inputType: 'void',
-    outputType: 'streamable'
+    outputType: 'streamable',
+    configParam: [
+      {
+        key: 'filePath',
+        type: 'string',
+        required: true
+      }
+    ],
     handlerBuilder: singleFileHandlerBuilder
   },
   {
@@ -57,7 +70,7 @@ var quiverComponents = [
         type: 'stream handler',
         rebuild: true
       },
-    ]
+    ],
     handlerBuilder: singleFileHandleableBuilder
   }
 ]

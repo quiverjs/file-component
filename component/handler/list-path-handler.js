@@ -13,8 +13,7 @@ var listPathHandlerBuilder = function(config, callback) {
     var subdirPath = args.filePath
 
     fs.readdir(subdirPath, function(err, files) {
-      if(err) return callback(
-        error(500, 'error reading directory'))
+      if(err) return callback(err)
 
       callback(null, { subpaths: files })
     })

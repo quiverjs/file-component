@@ -17,7 +17,7 @@ var quiverComponents = [
   {
     name: 'quiver normalize path filter',
     type: 'stream filter',
-    filter: sanitizePathFilter
+    filter: normalizePathFilter
   }
 ]
 

@@ -4,25 +4,31 @@
     "email": "soares.chen@gmail.com",
     "url": "http://soareschen.com"
   },
-  "name": "quiver-file-handler",
+  "name": "quiver-file-component",
   "desription": "Create various filesystem-related stream handlers and filters",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "homepage": "https://github.com/quiverjs/file-handler",
   "repository": {
     "url": "git@github.com:quiverjs/file-handler.git"
   },
   "dependencies": {
-    "quiver-file-stream": ">=0.0.1",
-    "quiver-stream-convert": ">=0.0.3",
-    "quiver-stream-channel": ">=0.0.7",
+    "quiver-copy": "~0.1.4",
     "quiver-error": "~0.1.0",
-    "async": "~0.2.10",
+    "quiver-config": "0.0.2",
+    "quiver-filter": "~0.1.1",
+    "quiver-module": "~0.0.4",
+    "quiver-component": "~0.2.0",
+    "quiver-handleable": "~0.1.0",
+    "quiver-file-stream": "~0.0.3",
+    "quiver-stream-convert": "~0.0.8",
+    "quiver-stream-channel": "~0.0.11",
     "mime": "~1.2.11",
+    "async": "~0.2.10",
     "watchr": "~2.4.11"
   },
   "devDependencies": {
-    "mocha": ">=1.8.1",
-    "should": ">=1.2.2"
+    "mocha": "~1.17.1",
+    "should": "~3.1.2"
   },
   "bugs": {
     "url": "https://github.com/quiverjs/file-handler/issues",

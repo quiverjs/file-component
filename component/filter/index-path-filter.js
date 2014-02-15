@@ -3,6 +3,7 @@
 
 var fs = require('fs')
 var filterLib = require('quiver-filter')
+var error = require('quiver-error').error
 
 var defaultIndexNames = [
   'index.html'
