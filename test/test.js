@@ -20,6 +20,7 @@ var watchOnce = function(watchPath, callback) {
 
   watchr.watch({
     path: watchPath,
+    catchupDelay: 200,
     listener: function(changeType, filePath, fileCurrentStat, filePreviousStat) {
       if(callbackCalled) return
 
@@ -225,7 +226,7 @@ describe('file component test', function() {
             })
           })
 
-          touch(testFile, {}, function(err) { })
+          touch(testFile, {}, function(err) { if(err) console.trace(err) })
         })
       })
     })

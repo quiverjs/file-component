@@ -5,6 +5,7 @@ var fs = require('fs')
 var pathLib = require('path')
 var watchr = require('watchr')
 var error = require('quiver-error').error
+var configLib = require('quiver-config')
 var streamChannel = require('quiver-stream-channel')
 
 var watchFilePath = function(watchPath, listener, callback) {
@@ -13,6 +14,7 @@ var watchFilePath = function(watchPath, listener, callback) {
     listener: function(changeType, filePath, fileCurrentStat, filePreviousStat) {
       listener(changeType, filePath, fileCurrentStat)
     },
+    catchupDelay: 100,
     next: callback
   })
 }
@@ -58,52 +60,19 @@ var fileCacheValidatorHandlerBuilder = function(config, callback) {
 }
 
 var dirCacheValidatorHandlerBuilder = function(config, callback) {
-  var dirPath = config.dirPath
+  var handler = function(args, callback) {
+    var etag = args.etag
+    var fileStats = args.fileStats
 
-  var etagTable = { }
+    var fileEtag = '' + fileStats.mtime.getTime()
 
-  var watcher = function(changeType, filePath, newFileStats) {
-    if(changeType == 'update' || changeType == 'create') {
-      etagTable[filePath] = getEtagFromFileStats(newFileStats)
-    } else if(changeType == 'delete') {
-      etagTable[filePath] = null
-    }
+    if(etag != fileEtag) return callback(
+      error(410, 'cache expired'))
+
+    callback(null)
   }
 
-  var getFileEtag = function(filePath, callback) {
-    if(etagTable[filePath]) return callback(null, 
-      etagTable[filePath])
-
-    fs.stat(filePath, function(err, fileStats) {
-      if(err) return callback(err)
-
-      var etag = getEtagFromFileStats(fileStats)
-      etagTable[filePath] = etag
-      callback(null, etag)
-    })
-  }
-
-  watchFilePath(dirPath, watcher, function(err) {
-    if(err) return callback(err)
-
-    var handler = function(args, callback) {
-      var path = args.path
-      var etag = args.etag
-
-      var filePath = pathLib.join(dirPath, path)
-
-      getFileEtag(filePath, function(err, fileEtag) {
-        if(err) return callback(err)
-
-        if(etag != fileEtag) return callback(
-          error(410, 'cache expired'))
-
-        callback(null)
-      })
-    }
-
-    callback(null, handler)
-  })
+  callback(null, handler)
 }
 
 var quiverComponents = [
@@ -130,14 +99,7 @@ var quiverComponents = [
     inputType: 'void',
     outputType: 'void',
     middlewares: [
-      'quiver normalize path filter'
-    ],
-    configParam: [
-      {
-        key: 'dirPath',
-        type: 'string',
-        required: true
-      }
+      'quiver file stats filter'
     ],
     handlerBuilder: dirCacheValidatorHandlerBuilder
   }

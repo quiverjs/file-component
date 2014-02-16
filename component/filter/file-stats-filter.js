@@ -4,33 +4,31 @@
 var fs = require('fs')
 var pathLib = require('path')
 var error = require('quiver-error').error
+var configLib = require('quiver-config')
 var filterLib = require('quiver-filter')
 
-var fileStatsFilter = filterLib.metaFilter(
-  filterLib.argsFilter,
-  function(config, callback) {
-    var dirPath = config.dirPath
+var fileStatsArgsFilter = function(config, callback) {
+  var dirPath = config.dirPath
+  
+  var fileStatsHandler = configLib.getSimpleHandler(config,
+    'quiver file stats handler')
 
-    var argsFilter = function(args, callback) {
-      var path = args.path
-      var filePath = pathLib.join(dirPath, path)
+  var argsFilter = function(args, callback) {
+    var path = args.path
+    var filePath = pathLib.join(dirPath, path)
 
-      fs.exists(filePath, function(exists) {
-        if(!exists) return callback(error(404, 'file not found'))
+    fileStatsHandler({ path: path }, function(err, fileStats) {
+      if(err) return callback(err)
+      
+      args.filePath = filePath
+      args.fileStats = fileStats
 
-        fs.stat(filePath, function(err, fileStats) {
-          if(err) return callback(err)
+      callback(null, args)
+    })
+  }
 
-          args.filePath = filePath
-          args.fileStats = fileStats
-
-          callback(null, args)
-        })
-      })
-    }
-
-    callback(null, argsFilter)
-  })
+  callback(null, argsFilter)
+}
 
 var quiverComponents = [
   {
@@ -39,6 +37,14 @@ var quiverComponents = [
     middlewares: [
       'quiver normalize path filter'
     ],
+    handleables: [
+      {
+        handler: 'quiver file stats handler',
+        type: 'simple handler',
+        inputType: 'void',
+        outputType: 'json'
+      }
+    ],
     configParam: [
       {
         key: 'dirPath',
@@ -46,7 +52,8 @@ var quiverComponents = [
         required: true
       }
     ],
-    filter: fileStatsFilter
+    filter: filterLib.metaFilter(filterLib.argsFilter, 
+      fileStatsArgsFilter)
   }
 ]
 
