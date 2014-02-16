@@ -2,6 +2,7 @@
 'use strict'
 
 var fs = require('fs')
+var pathLib = require('path')
 var watchr = require('watchr')
 var error = require('quiver-error').error
 var streamChannel = require('quiver-stream-channel')
@@ -9,11 +10,8 @@ var streamChannel = require('quiver-stream-channel')
 var watchFilePath = function(watchPath, listener, callback) {
   watchr.watch({
     path: watchPath,
-    listeners: {
-      change: function(changeType, filePath, fileCurrentStat, filePreviousStat) {
-        console.log('change event:', changeType, filePath, fileCurrentStat, filePreviousStat)
-        listener(changeType, filePath, fileCurrentStat)
-      }
+    listener: function(changeType, filePath, fileCurrentStat, filePreviousStat) {
+      listener(changeType, filePath, fileCurrentStat)
     },
     next: callback
   })
@@ -27,7 +25,7 @@ var fileCacheValidatorHandlerBuilder = function(config, callback) {
   var filePath = config.filePath
   var currentEtag
 
-  fs.stats(filePath, function(err, fileStats) {
+  fs.stat(filePath, function(err, fileStats) {
     if(err) return callback(err)
 
     currentEtag = getEtagFromFileStats(fileStats)
@@ -53,6 +51,8 @@ var fileCacheValidatorHandlerBuilder = function(config, callback) {
 
         callback()
       }
+
+      callback(null, handler)
     })
   })
 }
@@ -98,7 +98,7 @@ var dirCacheValidatorHandlerBuilder = function(config, callback) {
         if(etag != fileEtag) return callback(
           error(410, 'cache expired'))
 
-        callback()
+        callback(null)
       })
     }
 
@@ -115,6 +115,13 @@ var quiverComponents = [
     middlewares: [
       'quiver normalize path filter'
     ],
+    configParam: [
+      {
+        key: 'filePath',
+        type: 'string',
+        required: true
+      }
+    ],
     handlerBuilder: fileCacheValidatorHandlerBuilder
   },
   {
@@ -124,6 +131,13 @@ var quiverComponents = [
     outputType: 'void',
     middlewares: [
       'quiver normalize path filter'
+    ],
+    configParam: [
+      {
+        key: 'dirPath',
+        type: 'string',
+        required: true
+      }
     ],
     handlerBuilder: dirCacheValidatorHandlerBuilder
   }
