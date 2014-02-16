@@ -7,7 +7,7 @@ var filterLib = require('quiver-filter')
 var normalizePathFilter = filterLib.argsFilter(function(args, callback) {
   var path = args.path || '/'
 
-  path = pathLib.join('/', path)
+  path = pathLib.join('.', path)
   args.path = path
 
   callback(null, args)

@@ -197,7 +197,7 @@ describe('file component test', function() {
       var config = copyObject(componentConfig)
 
       var handlerBuilder = config.quiverHandleableBuilders[
-        'quiver dir cache validator handler']
+        'quiver file directory cache validator handler']
 
       config.dirPath = testDir
 
@@ -273,6 +273,43 @@ describe('file component test', function() {
           touch(testFile, {}, function(err) { })
         })
       })
+    })
+  })
+
+  it('dir handleable test', function(callback) {
+    var config = copyObject(componentConfig)
+
+    var handleableBuilder = config.quiverHandleableBuilders[
+      'quiver file directory handler']
+
+    config.dirPath = testDir
+
+    handleableBuilder(config, function(err, handleable) {
+      if(err) return callback(err)
+      
+      should.exists(handleable.toStreamHandler)
+      should.exists(handleable.toCacheValidatorHandler)
+      should.exists(handleable.toListPathHandler)
+
+      callback()
+    })
+  })
+
+  it('file handleable test', function(callback) {
+    var config = copyObject(componentConfig)
+
+    var handleableBuilder = config.quiverHandleableBuilders[
+      'quiver single file handler']
+
+    config.filePath = testFiles[1]
+
+    handleableBuilder(config, function(err, handleable) {
+      if(err) return callback(err)
+      
+      should.exists(handleable.toStreamHandler)
+      should.exists(handleable.toCacheValidatorHandler)
+
+      callback()
     })
   })
 })
