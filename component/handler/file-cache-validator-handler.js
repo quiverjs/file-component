@@ -3,7 +3,6 @@
 
 var fs = require('fs')
 var pathLib = require('path')
-var watchr = require('watchr')
 var error = require('quiver-error').error
 var configLib = require('quiver-config')
 var streamChannel = require('quiver-stream-channel')

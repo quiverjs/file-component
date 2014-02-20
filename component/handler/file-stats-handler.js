@@ -7,22 +7,29 @@ var watchr = require('watchr')
 var error = require('quiver-error').error
 var streamChannel = require('quiver-stream-channel')
 
-var watchFilePath = function(watchPath, listener, callback) {
+var watchFilePath = function(watchPath, listener) {
   watchr.watch({
     path: watchPath,
     listener: function(changeType, filePath, fileCurrentStat, filePreviousStat) {
       listener(changeType, filePath, fileCurrentStat)
     },
-    catchupDelay: 500,
-    next: callback
+    catchupDelay: 100
   })
 }
 
 var fileStatsHandlerBuilder = function(config, callback) {
   var dirPath = config.dirPath
+  var cacheInterval = config.cacheInterval || 300 * 1000
 
-  var notFoundCache = { }
   var statsCache = { }
+  var notFoundCache = { }
+
+  // clear the file stats cache every now and then 
+  // in case file watcher is not working
+  setInterval(function() {
+    statsCache = { }
+    notFoundCache = { }
+  },  cacheInterval)
 
   var watcher = function(changeType, filePath, newFileStats) {
     switch(changeType) {
@@ -39,6 +46,8 @@ var fileStatsHandlerBuilder = function(config, callback) {
       break;
     }
   }
+
+  watchFilePath(dirPath, watcher)
 
   var getFileStats = function(filePath, callback) {
     if(statsCache[filePath]) return callback(null, 
@@ -62,18 +71,14 @@ var fileStatsHandlerBuilder = function(config, callback) {
     })
   }
 
-  watchFilePath(dirPath, watcher, function(err) {
-    if(err) return callback(err)
+  var handler = function(args, callback) {
+    var path = args.path
+    var filePath = pathLib.join(dirPath, path)
 
-    var handler = function(args, callback) {
-      var path = args.path
-      var filePath = pathLib.join(dirPath, path)
+    getFileStats(filePath, callback)
+  }
 
-      getFileStats(filePath, callback)
-    }
-
-    callback(null, handler)
-  })
+  callback(null, handler)
 }
 
 var quiverComponents = [

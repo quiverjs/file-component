@@ -6,29 +6,14 @@ var touch = require('touch')
 var async = require('async')
 var pathLib = require('path')
 var should = require('should')
-var watchr = require('watchr')
+//var watchr = require('watchr')
 var error = require('quiver-error').error
 var moduleLib = require('quiver-module')
 var copyObject = require('quiver-copy').copyObject
 var componentLib = require('quiver-component')
 var streamChannel = require('quiver-stream-channel')
 var streamConvert = require('quiver-stream-convert')
-var fileHandlerLib = require('../lib/file-handler')
-
-var watchOnce = function(watchPath, callback) {
-  var callbackCalled = false
-
-  watchr.watch({
-    path: watchPath,
-    catchupDelay: 200,
-    listener: function(changeType, filePath, fileCurrentStat, filePreviousStat) {
-      if(callbackCalled) return
-
-      callbackCalled = true
-      callback()
-    }
-  })
-}
+var fileHandlerLib = require('../lib/file-component')
 
 describe('file component test', function() {
   var testContents
@@ -50,7 +35,8 @@ describe('file component test', function() {
   var testFiles = [
     '00.txt',
     '01.txt',
-    'subdir/02.txt',
+    'config.json',
+    'subdir/03.txt',
     'subdir/index.html',
   ].map(function(testFile) {
     return pathLib.join(__dirname, '../test-content/', testFile)
@@ -101,7 +87,6 @@ describe('file component test', function() {
           streamConvert.streamableToText(resultStreamable, 
             function(err, content) {
               if(err) return callback(err)
-
               should.equal(content, testContents[0])
               callback()
             })
@@ -121,7 +106,7 @@ describe('file component test', function() {
 
       var handler = handleable.toStreamHandler()
       var args = {
-        path: '/subdir/02.txt'
+        path: '/subdir/03.txt'
       }
 
       handler(args, streamChannel.createEmptyStreamable(),
@@ -132,7 +117,7 @@ describe('file component test', function() {
             function(err, content) {
               if(err) return callback(err)
 
-              should.equal(content, testContents[2])
+              should.equal(content, testContents[3])
               callback()
             })
         })
@@ -168,19 +153,21 @@ describe('file component test', function() {
 
       listFiles('/', function(err, files) {
         if(err) return callback(err)
-        
-        should.equal(files.length, 3)
-        should.equal(files[0], '00.txt')
-        should.equal(files[1], '01.txt')
-        should.equal(files[2], 'subdir')
+        process.nextTick(function() {
+          should.equal(files.length, 4)
+          should.equal(files[0], '00.txt')
+          should.equal(files[1], '01.txt')
+          should.equal(files[2], 'config.json')
+          should.equal(files[3], 'subdir')
 
-        listFiles('/subdir', function(err, files) {
-          if(err) return callback(err)
-          
-          should.equal(files.length, 2)
-          should.equal(files[0], '02.txt')
-          should.equal(files[1], 'index.html')
-          callback()
+          listFiles('/subdir', function(err, files) {
+            if(err) return callback(err)
+            
+            should.equal(files.length, 2)
+            should.equal(files[0], '03.txt')
+            should.equal(files[1], 'index.html')
+            callback()
+          })
         })
       })
     })
@@ -218,13 +205,13 @@ describe('file component test', function() {
         validate(testPath, etag, function(err) {
           should.not.exist(err)
 
-          watchOnce(testFile, function() {
+          setTimeout(function() {
             validate(testPath, etag, function(err) {
               if(!err) return callback(error(500, 'cache should be invalidated'))
 
               callback()
             })
-          })
+          }, 500)
 
           touch(testFile, {}, function(err) { if(err) console.trace(err) })
         })
@@ -262,13 +249,13 @@ describe('file component test', function() {
         validate(etag, function(err) {
           should.not.exist(err)
 
-          watchOnce(testFile, function() {
+          setTimeout(function() {
             validate(etag, function(err) {
               if(!err) return callback(error(500, 'cache should be invalidated'))
 
               callback()
             })
-          })
+          }, 500)
 
           touch(testFile, {}, function(err) { })
         })

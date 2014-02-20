@@ -15,7 +15,6 @@ var directoryHandlerBuilder = function(config, callback) {
 
     if(!fileStats.isFile()) return callback(
       error(404, 'path is not a file'))
-
     callback(null, fileStreamLib.createFileStreamableWithStats(
       filePath, fileStats))
   }
