@@ -19,7 +19,7 @@
     "quiver-error": "~0.1.0",
     "quiver-config": "~0.0.3",
     "quiver-filter": "~0.1.1",
-    "quiver-module": "~0.0.4",
+    "quiver-module": "~0.1.1",
     "quiver-component": "~0.2.1",
     "quiver-handleable": "~0.1.1",
     "quiver-file-stream": "~0.0.3",

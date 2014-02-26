@@ -6,37 +6,35 @@ var touch = require('touch')
 var async = require('async')
 var pathLib = require('path')
 var should = require('should')
-//var watchr = require('watchr')
 var error = require('quiver-error').error
 var moduleLib = require('quiver-module')
 var copyObject = require('quiver-copy').copyObject
 var componentLib = require('quiver-component')
 var streamChannel = require('quiver-stream-channel')
 var streamConvert = require('quiver-stream-convert')
-var fileHandlerLib = require('../lib/file-component')
+
+var fileComponentModule = require('../lib/file-component').quiverModule
+var quiverComponents = moduleLib.loadComponentsFromQuiverModule(fileComponentModule)
+
+quiverComponents.push({
+  name: 'test index file handler',
+  type: 'stream handler',
+  middlewares: [
+    'quiver file index path filter'
+  ],
+  handler: 'quiver file directory stream handler'
+})
 
 describe('file component test', function() {
   var testContents
   var componentConfig
-
-  var quiverComponents = [
-    {
-      name: 'test index file handler',
-      type: 'stream handler',
-      middlewares: [
-        'quiver file index path filter'
-      ],
-      handler: 'quiver file directory stream handler'
-    }
-  ]
 
   var testDir = pathLib.join(__dirname, '../test-content/')
 
   var testFiles = [
     '00.txt',
     '01.txt',
-    'config.json',
-    'subdir/03.txt',
+    'subdir/02.txt',
     'subdir/index.html',
   ].map(function(testFile) {
     return pathLib.join(__dirname, '../test-content/', testFile)
@@ -54,20 +52,12 @@ describe('file component test', function() {
   })
 
   before(function(callback) {
-    moduleLib.loadComponentsFromQuiverModule(
-      fileHandlerLib.quiverModule, 
-      function(err, components) {
-        if(err) return callback(err)
+    componentLib.installComponents(quiverComponents, function(err, config) {
+      if(err) return callback(err)
 
-        quiverComponents = quiverComponents.concat(components)
-        componentLib.installComponents(quiverComponents, 
-          function(err, config) {
-            if(err) return callback(err)
-
-            componentConfig = config
-            callback()
-          })
-      })
+      componentConfig = config
+      callback()
+    })
   })
 
   it('file stream handler test', function(callback) {
@@ -106,7 +96,7 @@ describe('file component test', function() {
 
       var handler = handleable.toStreamHandler()
       var args = {
-        path: '/subdir/03.txt'
+        path: '/subdir/02.txt'
       }
 
       handler(args, streamChannel.createEmptyStreamable(),
@@ -117,7 +107,7 @@ describe('file component test', function() {
             function(err, content) {
               if(err) return callback(err)
 
-              should.equal(content, testContents[3])
+              should.equal(content, testContents[2])
               callback()
             })
         })
@@ -154,17 +144,16 @@ describe('file component test', function() {
       listFiles('/', function(err, files) {
         if(err) return callback(err)
         process.nextTick(function() {
-          should.equal(files.length, 4)
+          should.equal(files.length, 3)
           should.equal(files[0], '00.txt')
           should.equal(files[1], '01.txt')
-          should.equal(files[2], 'config.json')
-          should.equal(files[3], 'subdir')
+          should.equal(files[2], 'subdir')
 
           listFiles('/subdir', function(err, files) {
             if(err) return callback(err)
             
             should.equal(files.length, 2)
-            should.equal(files[0], '03.txt')
+            should.equal(files[0], '02.txt')
             should.equal(files[1], 'index.html')
             callback()
           })
