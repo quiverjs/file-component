@@ -2,6 +2,7 @@
 'use strict'
 
 var fs = require('fs')
+var pathLib = require('path')
 var filterLib = require('quiver-filter')
 var error = require('quiver-error').error
 

@@ -6,7 +6,7 @@
   },
   "name": "quiver-file-component",
   "desription": "Create various filesystem-related stream handlers and filters",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/quiverjs/file-component",
   "repository": {
     "url": "git@github.com:quiverjs/file-component.git"
@@ -19,18 +19,18 @@
     "quiver-error": "~0.1.0",
     "quiver-config": "~0.0.3",
     "quiver-filter": "~0.1.1",
-    "quiver-module": "~0.1.1",
+    "quiver-module": "~0.1.2",
     "quiver-component": "~0.2.1",
     "quiver-handleable": "~0.1.1",
     "quiver-file-stream": "~0.0.3",
-    "quiver-stream-convert": "~0.0.8",
-    "quiver-stream-channel": "~0.0.11",
-    "quiver-safe-callback": "~0.1.1"
+    "quiver-stream-convert": "~0.0.10",
+    "quiver-stream-channel": "~0.0.12"
   },
   "devDependencies": {
     "touch": "~0.0.3",
     "mocha": "~1.17.1",
-    "should": "~3.1.2"
+    "should": "~3.1.2",
+    "quiver-server": "~0.1.0"
   },
   "bugs": {
     "url": "https://github.com/quiverjs/file-component/issues",
