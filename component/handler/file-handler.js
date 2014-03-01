@@ -24,13 +24,13 @@ var directoryHandlerBuilder = function(config, callback) {
 
 var dirHandlerNames = [
   'quiver file directory stream handler',
-  'quiver file directory cache validator handler',
   'quiver file list path handler',
+  'quiver file directory cache id handler'
 ]
 
 var fileHandlerNames = [
   'quiver single file stream handler',
-  'quiver file cache validator handler'
+  'quiver single file cache id handler'
 ]
 
 var buildStreamHandlers = function(config, handlerNames, callback) {
@@ -59,23 +59,23 @@ var directoryHandleableBuilder = function(config, callback) {
     if(err) return callback(err)
     
     var directoryStreamHandler = dirHandlers[0]
-    var dirCacheValidatorHandler = dirHandlers[1]
-    var fileListPathHandler = dirHandlers[2]
+    var fileListPathHandler = dirHandlers[1]
+    var cacheIdHandler = dirHandlers[2]
 
     var handleable = {
       toStreamHandler: function() {
         return directoryStreamHandler
       },
-      toCacheValidatorHandler: function() {
-        return dirCacheValidatorHandler
-      },
       toListPathHandler: function() {
         return fileListPathHandler
+      },
+      toCacheIdHandler: function() {
+        return cacheIdHandler
       }
     }
 
-    handleableLib.makeExtensible(handleable.toCacheValidatorHandler)
     handleableLib.makeExtensible(handleable.toListPathHandler)
+    handleableLib.makeExtensible(handleable.toCacheIdHandler)
 
     callback(null, handleable)
   })
@@ -86,18 +86,18 @@ var fileHandleableBuilder = function(config, callback) {
     if(err) return callback(err)
     
     var fileStreamHandler = fileHandlers[0]
-    var fileCacheValidatorHandler = fileHandlers[1]
+    var cacheIdHandler = fileHandlers[1]
 
     var handleable = {
       toStreamHandler: function() {
         return fileStreamHandler
       },
-      toCacheValidatorHandler: function() {
-        return fileCacheValidatorHandler
+      toCacheIdHandler: function() {
+        return cacheIdHandler
       }
     }
-
-    handleableLib.makeExtensible(handleable.toCacheValidatorHandler)
+    
+    handleableLib.makeExtensible(handleable.toCacheIdHandler)
 
     callback(null, handleable)
   })

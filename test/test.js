@@ -12,6 +12,8 @@ var copyObject = require('quiver-copy').copyObject
 var componentLib = require('quiver-component')
 var streamChannel = require('quiver-stream-channel')
 var streamConvert = require('quiver-stream-convert')
+var simpleHandlerLib = require('quiver-simple-handler')
+var fileCacheId = require('../component/handler/file-cache-id-handler').fileCacheId
 
 var fileComponentModule = require('../lib/file-component').quiverModule
 var quiverComponents = moduleLib.loadComponentsFromQuiverModule(fileComponentModule)
@@ -162,92 +164,95 @@ describe('file component test', function() {
     })
   })
 
-  it('validate dir cache handler test', function(callback) {
+  it('dir cache id test', function(callback) {
     var testFile = testFiles[1]
     var testPath = '/01.txt'
 
-    fs.stat(testFile, function(err, stats) {
+    var fileStats1 = fs.statSync(testFile)
+    var cacheId1 = fileCacheId(testFile, fileStats1)
+
+    var config = copyObject(componentConfig)
+    config.dirPath = testDir
+
+    var handlerBuilder = config.quiverHandleableBuilders[
+      'quiver file directory cache id handler']
+
+    handlerBuilder(config, function(err, handleable) {
       if(err) return callback(err)
 
-      var etag = '' + stats.mtime.getTime()
-      var config = copyObject(componentConfig)
+      var streamHandler = handleable.toStreamHandler()
+      var handler = simpleHandlerLib.streamHandlerToSimpleHandler(
+        'void', 'text', streamHandler)
 
-      var handlerBuilder = config.quiverHandleableBuilders[
-        'quiver file directory cache validator handler']
+      var args = {
+        path: testPath
+      }
 
-      config.dirPath = testDir
-
-      handlerBuilder(config, function(err, handleable) {
+      handler(args, function(err, cacheId) {
         if(err) return callback(err)
-
-        var handler = handleable.toStreamHandler()
         
-        var validate = function(path, etag, callback) {
-          var args = {
-            path: path,
-            etag: etag
-          }
+        should.equal(cacheId, cacheId1)
 
-          handler(args, streamChannel.createEmptyStreamable(), callback)
-        }
+        touch(testFile, {}, function(err) { if(err) console.trace(err) })
 
-        validate(testPath, etag, function(err) {
-          should.not.exist(err)
+        setTimeout(function() {
+          handler(args, function(err, cacheId) {
+            if(err) return callback(err)
+          
+            var fileStats2 = fs.statSync(testFile)
+            var cacheId2 = fileCacheId(testFile, fileStats2)
 
-          setTimeout(function() {
-            validate(testPath, etag, function(err) {
-              if(!err) return callback(error(500, 'cache should be invalidated'))
+            should.equal(cacheId, cacheId2)
+          
+            callback()
+          })
+        }, 500)
 
-              callback()
-            })
-          }, 500)
-
-          touch(testFile, {}, function(err) { if(err) console.trace(err) })
-        })
       })
     })
   })
 
-  it('validate file cache handler test', function(callback) {
+  it('file cache id test', function(callback) {
     var testFile = testFiles[2]
 
-    fs.stat(testFile, function(err, stats) {
+    var fileStats1 = fs.statSync(testFile)
+    var cacheId1 = fileCacheId(testFile, fileStats1)
+
+    var config = copyObject(componentConfig)
+    config.filePath = testFile
+
+    var handlerBuilder = config.quiverHandleableBuilders[
+      'quiver single file cache id handler']
+
+    handlerBuilder(config, function(err, handleable) {
       if(err) return callback(err)
 
-      var etag = '' + stats.mtime.getTime()
-      var config = copyObject(componentConfig)
+      var streamHandler = handleable.toStreamHandler()
+      var handler = simpleHandlerLib.streamHandlerToSimpleHandler(
+        'void', 'text', streamHandler)
 
-      var handlerBuilder = config.quiverHandleableBuilders[
-        'quiver file cache validator handler']
+      var args = { }
 
-      config.filePath = testFile
-
-      handlerBuilder(config, function(err, handleable) {
+      handler(args, function(err, cacheId) {
         if(err) return callback(err)
-
-        var handler = handleable.toStreamHandler()
         
-        var validate = function(etag, callback) {
-          var args = {
-            etag: etag
-          }
+        should.equal(cacheId, cacheId1)
 
-          handler(args, streamChannel.createEmptyStreamable(), callback)
-        }
+        touch(testFile, {}, function(err) { if(err) console.trace(err) })
 
-        validate(etag, function(err) {
-          should.not.exist(err)
+        setTimeout(function() {
+          handler(args, function(err, cacheId) {
+            if(err) return callback(err)
+          
+            var fileStats2 = fs.statSync(testFile)
+            var cacheId2 = fileCacheId(testFile, fileStats2)
 
-          setTimeout(function() {
-            validate(etag, function(err) {
-              if(!err) return callback(error(500, 'cache should be invalidated'))
+            should.equal(cacheId, cacheId2)
+          
+            callback()
+          })
+        }, 500)
 
-              callback()
-            })
-          }, 500)
-
-          touch(testFile, {}, function(err) { })
-        })
       })
     })
   })
@@ -264,8 +269,8 @@ describe('file component test', function() {
       if(err) return callback(err)
       
       should.exists(handleable.toStreamHandler)
-      should.exists(handleable.toCacheValidatorHandler)
       should.exists(handleable.toListPathHandler)
+      should.exists(handleable.toCacheIdHandler)
 
       callback()
     })
@@ -283,7 +288,7 @@ describe('file component test', function() {
       if(err) return callback(err)
       
       should.exists(handleable.toStreamHandler)
-      should.exists(handleable.toCacheValidatorHandler)
+      should.exists(handleable.toCacheIdHandler)
 
       callback()
     })
