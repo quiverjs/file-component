@@ -6,32 +6,25 @@
   },
   "name": "quiver-file-component",
   "desription": "Create various filesystem-related stream handlers and filters",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/quiverjs/file-component",
   "repository": {
     "url": "git@github.com:quiverjs/file-component.git"
   },
   "dependencies": {
-    "mime": "~1.2.11",
-    "async": "~0.2.10",
-    "watchr": "~2.4.11",
-    "quiver-copy": "~0.1.4",
-    "quiver-error": "~0.1.0",
-    "quiver-config": "~0.0.3",
-    "quiver-filter": "~0.1.1",
-    "quiver-module": "~0.1.2",
-    "quiver-component": "~0.2.1",
-    "quiver-handleable": "~0.1.1",
-    "quiver-file-stream": "~0.0.3",
-    "quiver-stream-convert": "~0.0.10",
-    "quiver-stream-channel": "~0.0.12"
+    "chokidar": "^0.8.2",
+    "quiver-component": "~1.0.0",
+    "quiver-error": "^0.1.0",
+    "quiver-file-stream": "~1.0.0",
+    "traceur": "~0.0.45"
   },
   "devDependencies": {
-    "touch": "~0.0.3",
-    "mocha": "~1.17.1",
-    "should": "~3.1.2",
-    "quiver-server": "~0.1.0",
-    "quiver-simple-handler": "~0.0.4"
+    "chai": "^1.9.1",
+    "chai-as-promised": "^4.1.1",
+    "gulp": "^3.8.1",
+    "gulp-traceur": "^0.7.0",
+    "mocha": "^1.20.1",
+    "touch": "0.0.3"
   },
   "bugs": {
     "url": "https://github.com/quiverjs/file-component/issues",
