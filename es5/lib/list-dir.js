@@ -15,7 +15,8 @@ var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     promisify = $__0.promisify;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
     SimpleHandlerBuilder = $__0.SimpleHandlerBuilder,
-    PrivateInputMiddleware = $__0.PrivateInputMiddleware;
+    PrivateInputMiddleware = $__0.PrivateInputMiddleware,
+    loadStreamHandler = $__0.loadStreamHandler;
 var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
 var watchFileMiddleware = $traceurRuntime.assertObject(require('./file-watch.js')).watchFileMiddleware;
 var readDirectory = promisify(readdir);
@@ -50,4 +51,4 @@ var listDirPathHandler = new SimpleHandlerBuilder((function(config) {
     }));
   });
 }), 'void', 'json', {name: 'Quiver List Directory Path Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(fileStatsFilter);
-var listDirMiddleware = new PrivateInputMiddleware(listDirPathHandler, 'listDirHandler');
+var listDirMiddleware = new PrivateInputMiddleware(listDirPathHandler, 'listDirHandler', {loader: loadStreamHandler});

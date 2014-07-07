@@ -11,7 +11,8 @@ Object.defineProperties(exports, {
 var createHash = $traceurRuntime.assertObject(require('crypto')).createHash;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
     SimpleHandler = $__0.SimpleHandler,
-    PrivateInputMiddleware = $__0.PrivateInputMiddleware;
+    PrivateInputMiddleware = $__0.PrivateInputMiddleware,
+    loadStreamHandler = $__0.loadStreamHandler;
 var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
 var hash = (function(string) {
   var checksum = createHash('md5');
@@ -23,10 +24,10 @@ var fileCacheHandler = new SimpleHandler((function(args) {
       filePath = $__0.filePath,
       fileStats = $__0.fileStats;
   var cacheId = hash(filePath);
-  var lastModified = fileStats.mtime.getTime();
+  var lastModified = fileStats.mtime;
   return {
     cacheId: cacheId,
     lastModified: lastModified
   };
 }), 'void', 'json').addMiddleware(fileStatsFilter);
-var fileCacheMiddleware = new PrivateInputMiddleware(fileCacheHandler, 'fileCacheHandler');
+var fileCacheMiddleware = new PrivateInputMiddleware(fileCacheHandler, 'fileCacheHandler', {loader: loadStreamHandler});

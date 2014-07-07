@@ -9,6 +9,9 @@ Object.defineProperties(exports, {
   fileStatsHandler: {get: function() {
       return fileStatsHandler;
     }},
+  fileCacheHandler: {get: function() {
+      return fileCacheHandler;
+    }},
   indexPathFilter: {get: function() {
       return indexPathFilter;
     }},
@@ -24,6 +27,7 @@ require('traceur');
 var fileHandleable = $traceurRuntime.assertObject(require('./file-handleable.js')).fileHandleable;
 var fileStreamHandler = $traceurRuntime.assertObject(require('./file-handler.js')).fileStreamHandler;
 var fileStatsHandler = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsHandler;
+var fileCacheHandler = $traceurRuntime.assertObject(require('./file-cache.js')).fileCacheHandler;
 var indexPathFilter = $traceurRuntime.assertObject(require('./index-path.js')).indexPathFilter;
 var listDirPathHandler = $traceurRuntime.assertObject(require('./list-dir.js')).listDirPathHandler;
 var normalizePathFilter = $traceurRuntime.assertObject(require('./normalize.js')).normalizePathFilter;
