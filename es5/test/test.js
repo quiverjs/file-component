@@ -96,13 +96,15 @@ describe('file component test', (function() {
   it('router test', (function() {
     var filePath = testFiles[1];
     var expected = expectedResults[1];
-    var router = new Router().addStaticRoute(singleFileHandler, '/static-file').addParamRoute(fileHandler, '/api/:subpath');
+    var router = new Router().addStaticRoute(singleFileHandler, '/static-file').addParamRoute(fileHandler, '/api/:restpath');
     var config = {
       filePath: filePath,
       dirPath: dirPath
     };
     return loadSimpleHandler(config, router, 'void', 'text').then((function(handler) {
-      return handler({path: '/static-file'}).should.eventually.equal(expected);
+      var p1 = handler({path: '/static-file'}).should.eventually.equal(expected);
+      var p2 = handler({path: '/api/subdir/index.html'}).should.eventually.equal(expectedResults[3]);
+      return Promise.all([p1, p2]);
     }));
   }));
 }));

@@ -12,19 +12,21 @@
     "url": "git@github.com:quiverjs/file-component.git"
   },
   "dependencies": {
+    "traceur": "~0.0.45",
     "chokidar": "^0.8.2",
-    "quiver-component": "~1.0.0",
     "quiver-error": "^0.1.0",
+    "quiver-component": "~1.0.0",
     "quiver-file-stream": "~1.0.0",
-    "traceur": "~0.0.45"
   },
   "devDependencies": {
-    "chai": "^1.9.1",
-    "chai-as-promised": "^4.1.1",
     "gulp": "^3.8.1",
-    "gulp-traceur": "^0.7.0",
+    "chai": "^1.9.1",
+    "touch": "~0.0.3",
     "mocha": "^1.20.1",
-    "touch": "0.0.3"
+    "gulp-traceur": "^0.7.0",
+    "chai-as-promised": "^4.1.1",
+    "quiver-stream-util": "~1.0.0",
+    "quiver-simple-handler": "~1.0.0"
   },
   "bugs": {
     "url": "https://github.com/quiverjs/file-component/issues",
@@ -34,7 +36,7 @@
     "type": "MIT",
     "url": "https://raw.github.com/quiverjs/license/master/LICENSE"
   },
-  "main": "./lib/file-component",
+  "main": "./index.js",
   "scripts": {
     "test": "make test"
   }
