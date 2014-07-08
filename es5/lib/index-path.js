@@ -10,7 +10,10 @@ var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     promisify = $__0.promisify,
     reject = $__0.reject;
 var ArgsBuilderFilter = $traceurRuntime.assertObject(require('quiver-component')).ArgsBuilderFilter;
+var streamToSimpleHandler = $traceurRuntime.assertObject(require('quiver-simple-handler')).streamToSimpleHandler;
+var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
 var listDirMiddleware = $traceurRuntime.assertObject(require('./list-dir.js')).listDirMiddleware;
+var defaultIndexes = ['index.html'];
 var getIndexFile = (function(indexNames, files) {
   for (var i = 0; i < indexNames.length; i++) {
     var indexName = indexNames[$traceurRuntime.toProperty(i)];
@@ -21,7 +24,10 @@ var getIndexFile = (function(indexNames, files) {
   return null;
 });
 var indexPathFilter = new ArgsBuilderFilter((function(config) {
-  var listDir = config.listDirHandler;
+  var $__1;
+  var listDir = streamToSimpleHandler(config.listDirHandler, 'void', 'json');
+  var $__0 = $traceurRuntime.assertObject(config),
+      indexNames = ($__1 = $__0.indexNames) === void 0 ? defaultIndexes : $__1;
   return (function(args) {
     var $__0 = $traceurRuntime.assertObject(args),
         path = $__0.path,
@@ -40,4 +46,4 @@ var indexPathFilter = new ArgsBuilderFilter((function(config) {
       return args;
     }));
   });
-}), {name: 'Quiver Index Path Filter'}).addMiddleware(listDirMiddleware);
+}), {name: 'Quiver Index Path Filter'}).addMiddleware(listDirMiddleware).addMiddleware(fileStatsFilter);

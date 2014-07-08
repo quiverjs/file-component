@@ -5,14 +5,17 @@ var joinPath = $traceurRuntime.assertObject(require('path')).join;
 var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     promisify = $__0.promisify,
     timeout = $__0.timeout;
-var loadSimpleHandler = $traceurRuntime.assertObject(require('quiver-component')).loadSimpleHandler;
+var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
+    loadSimpleHandler = $__0.loadSimpleHandler,
+    ExtendedHandler = $__0.ExtendedHandler;
 var streamToSimpleHandler = $traceurRuntime.assertObject(require('quiver-simple-handler')).streamToSimpleHandler;
 var $__0 = $traceurRuntime.assertObject(require('quiver-stream-util')),
     streamableToText = $__0.streamableToText,
     emptyStreamable = $__0.emptyStreamable;
 var $__0 = $traceurRuntime.assertObject(require('../lib/file-component.js')),
     fileHandler = $__0.fileHandler,
-    fileStreamHandler = $__0.fileStreamHandler;
+    fileStreamHandler = $__0.fileStreamHandler,
+    indexPathFilter = $__0.indexPathFilter;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -80,6 +83,12 @@ describe('file component test', (function() {
         should.equal(files[1], 'index.html');
       }));
       return Promise.all([p1, p2]);
+    }));
+  }));
+  it('index path handler test', (function() {
+    var component = new ExtendedHandler(fileHandler).addMiddleware(indexPathFilter);
+    return loadSimpleHandler({dirPath: dirPath}, component, 'void', 'text').then((function(handler) {
+      return handler({path: '/subdir'}).should.eventually.equal(expectedResults[3]);
     }));
   }));
 }));
