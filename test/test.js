@@ -113,14 +113,4 @@ describe('file component test', () => {
 
       return Promise.all([p1, p2])
     }))
-
-  it('index path handler test', () => {
-    var component = new ExtendedHandler(fileHandler)
-      .addMiddleware(indexPathFilter)
-
-    return loadSimpleHandler({dirPath}, component, 'void', 'text')
-    .then(handler => 
-      handler({path: '/subdir'}).should.eventually.equal(
-        expectedResults[3]))
-  })
 })

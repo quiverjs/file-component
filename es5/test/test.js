@@ -85,10 +85,4 @@ describe('file component test', (function() {
       return Promise.all([p1, p2]);
     }));
   }));
-  it('index path handler test', (function() {
-    var component = new ExtendedHandler(fileHandler).addMiddleware(indexPathFilter);
-    return loadSimpleHandler({dirPath: dirPath}, component, 'void', 'text').then((function(handler) {
-      return handler({path: '/subdir'}).should.eventually.equal(expectedResults[3]);
-    }));
-  }));
 }));
