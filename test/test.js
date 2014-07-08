@@ -2,15 +2,19 @@ import 'traceur'
 import { readFileSync } from 'fs'
 import { join as joinPath } from 'path'
 import { promisify, timeout } from 'quiver-promise'
-import { loadSimpleHandler, ExtendedHandler } from 'quiver-component'
 import { streamToSimpleHandler } from 'quiver-simple-handler'
+
+import { 
+  loadSimpleHandler, ExtendedHandler, Router
+} from 'quiver-component'
+
 import { 
   streamableToText, emptyStreamable 
 } from 'quiver-stream-util'
 
 import { 
   fileHandler, fileStreamHandler,
-  indexPathFilter
+  singleFileHandler
 } from '../lib/file-component.js'
 
 var chai = require('chai')
@@ -113,4 +117,29 @@ describe('file component test', () => {
 
       return Promise.all([p1, p2])
     }))
+
+  it('single file handler', () => {
+    var filePath = testFiles[1]
+    var expected = expectedResults[1]
+
+    return loadSimpleHandler({filePath}, singleFileHandler, 
+      'void', 'text').then(handler =>
+      handler({path:'/random'}).should.eventually.equal(expected))
+  })
+
+  it('router test', () => {
+    var filePath = testFiles[1]
+    var expected = expectedResults[1]
+
+    var router = new Router()
+      .addStaticRoute(singleFileHandler, '/static-file')
+      .addParamRoute(fileHandler, '/api/:subpath')
+
+    var config = { filePath, dirPath }
+    return loadSimpleHandler(config, router, 'void', 'text')
+    .then(handler => {
+      return handler({path: '/static-file'})
+        .should.eventually.equal(expected)
+    })
+  })
 })

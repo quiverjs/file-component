@@ -5,17 +5,18 @@ var joinPath = $traceurRuntime.assertObject(require('path')).join;
 var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     promisify = $__0.promisify,
     timeout = $__0.timeout;
+var streamToSimpleHandler = $traceurRuntime.assertObject(require('quiver-simple-handler')).streamToSimpleHandler;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
     loadSimpleHandler = $__0.loadSimpleHandler,
-    ExtendedHandler = $__0.ExtendedHandler;
-var streamToSimpleHandler = $traceurRuntime.assertObject(require('quiver-simple-handler')).streamToSimpleHandler;
+    ExtendedHandler = $__0.ExtendedHandler,
+    Router = $__0.Router;
 var $__0 = $traceurRuntime.assertObject(require('quiver-stream-util')),
     streamableToText = $__0.streamableToText,
     emptyStreamable = $__0.emptyStreamable;
 var $__0 = $traceurRuntime.assertObject(require('../lib/file-component.js')),
     fileHandler = $__0.fileHandler,
     fileStreamHandler = $__0.fileStreamHandler,
-    indexPathFilter = $__0.indexPathFilter;
+    singleFileHandler = $__0.singleFileHandler;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -83,6 +84,25 @@ describe('file component test', (function() {
         should.equal(files[1], 'index.html');
       }));
       return Promise.all([p1, p2]);
+    }));
+  }));
+  it('single file handler', (function() {
+    var filePath = testFiles[1];
+    var expected = expectedResults[1];
+    return loadSimpleHandler({filePath: filePath}, singleFileHandler, 'void', 'text').then((function(handler) {
+      return handler({path: '/random'}).should.eventually.equal(expected);
+    }));
+  }));
+  it('router test', (function() {
+    var filePath = testFiles[1];
+    var expected = expectedResults[1];
+    var router = new Router().addStaticRoute(singleFileHandler, '/static-file').addParamRoute(fileHandler, '/api/:subpath');
+    var config = {
+      filePath: filePath,
+      dirPath: dirPath
+    };
+    return loadSimpleHandler(config, router, 'void', 'text').then((function(handler) {
+      return handler({path: '/static-file'}).should.eventually.equal(expected);
     }));
   }));
 }));

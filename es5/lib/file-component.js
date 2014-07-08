@@ -18,6 +18,9 @@ Object.defineProperties(exports, {
   normalizePathFilter: {get: function() {
       return normalizePathFilter;
     }},
+  singleFileHandler: {get: function() {
+      return singleFileHandler;
+    }},
   __esModule: {value: true}
 });
 require('traceur');
@@ -27,4 +30,5 @@ var fileStatsHandler = $traceurRuntime.assertObject(require('./file-stats.js')).
 var fileCacheHandler = $traceurRuntime.assertObject(require('./file-cache.js')).fileCacheHandler;
 var listDirPathHandler = $traceurRuntime.assertObject(require('./list-dir.js')).listDirPathHandler;
 var normalizePathFilter = $traceurRuntime.assertObject(require('./normalize.js')).normalizePathFilter;
+var singleFileHandler = $traceurRuntime.assertObject(require('./single-file.js')).singleFileHandler;
 ;

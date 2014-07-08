@@ -8,6 +8,7 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
+var error = $traceurRuntime.assertObject(require('quiver-error')).error;
 var reject = $traceurRuntime.assertObject(require('quiver-promise')).reject;
 var fileStreamable = $traceurRuntime.assertObject(require('quiver-file-stream')).fileStreamable;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
