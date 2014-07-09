@@ -8,8 +8,7 @@ var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
 var streamToSimpleHandler = $traceurRuntime.assertObject(require('quiver-simple-handler')).streamToSimpleHandler;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
     loadSimpleHandler = $__0.loadSimpleHandler,
-    ExtendedHandler = $__0.ExtendedHandler,
-    Router = $__0.Router;
+    createRouter = $__0.router;
 var $__0 = $traceurRuntime.assertObject(require('quiver-stream-util')),
     streamableToText = $__0.streamableToText,
     emptyStreamable = $__0.emptyStreamable;
@@ -96,7 +95,7 @@ describe('file component test', (function() {
   it('router test', (function() {
     var filePath = testFiles[1];
     var expected = expectedResults[1];
-    var router = new Router().addStaticRoute(singleFileHandler, '/static-file').addParamRoute(fileHandler, '/api/:restpath');
+    var router = createRouter().addStaticRoute(singleFileHandler, '/static-file').addParamRoute(fileHandler, '/api/:restpath');
     var config = {
       filePath: filePath,
       dirPath: dirPath

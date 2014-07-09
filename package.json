@@ -14,9 +14,11 @@
   "dependencies": {
     "traceur": "~0.0.45",
     "chokidar": "^0.8.2",
-    "quiver-error": "^0.1.0",
+    "quiver-error": "~0.1.0",
+    "quiver-object": "~0.0.1",
+    "quiver-promise": "~0.0.2",
     "quiver-component": "~1.0.0",
-    "quiver-file-stream": "~1.0.0",
+    "quiver-file-stream": "~1.0.0"
   },
   "devDependencies": {
     "gulp": "^3.8.1",

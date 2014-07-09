@@ -5,7 +5,8 @@ import { promisify, timeout } from 'quiver-promise'
 import { streamToSimpleHandler } from 'quiver-simple-handler'
 
 import { 
-  loadSimpleHandler, ExtendedHandler, Router
+  loadSimpleHandler,
+  router as createRouter
 } from 'quiver-component'
 
 import { 
@@ -131,7 +132,7 @@ describe('file component test', () => {
     var filePath = testFiles[1]
     var expected = expectedResults[1]
 
-    var router = new Router()
+    var router = createRouter()
       .addStaticRoute(singleFileHandler, '/static-file')
       .addParamRoute(fileHandler, '/api/:restpath')
 

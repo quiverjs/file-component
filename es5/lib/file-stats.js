@@ -22,9 +22,9 @@ var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     promisify = $__0.promisify,
     createPromise = $__0.createPromise;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    ArgsBuilderFilter = $__0.ArgsBuilderFilter,
-    SimpleHandlerBuilder = $__0.SimpleHandlerBuilder,
-    PrivateInputMiddleware = $__0.PrivateInputMiddleware;
+    argsBuilderFilter = $__0.argsBuilderFilter,
+    simpleHandlerBuilder = $__0.simpleHandlerBuilder,
+    privateInputMiddleware = $__0.privateInputMiddleware;
 var watchFileMiddleware = $traceurRuntime.assertObject(require('./file-watch.js')).watchFileMiddleware;
 var normalizePathFilter = $traceurRuntime.assertObject(require('./normalize.js')).normalizePathFilter;
 var statFile = promisify(stat);
@@ -54,7 +54,7 @@ var fileStatsToJson = (function(stats) {
     ctime: stats.ctime.getTime()
   });
 });
-var fileStatsHandler = new SimpleHandlerBuilder((function(config) {
+var fileStatsHandler = simpleHandlerBuilder((function(config) {
   var $__1;
   var $__0 = $traceurRuntime.assertObject(config),
       fileEvents = $__0.fileEvents,
@@ -95,8 +95,8 @@ var fileStatsHandler = new SimpleHandlerBuilder((function(config) {
     }));
   });
 }), 'void', 'json', {name: 'Quiver File Stats Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(normalizePathFilter);
-var fileStatsMiddleware = new PrivateInputMiddleware(fileStatsHandler, 'getFileStats');
-var fileStatsFilter = new ArgsBuilderFilter((function(config) {
+var fileStatsMiddleware = privateInputMiddleware(fileStatsHandler, 'getFileStats');
+var fileStatsFilter = argsBuilderFilter((function(config) {
   var $__0 = $traceurRuntime.assertObject(config),
       dirPath = $__0.dirPath,
       getFileStats = $__0.getFileStats;

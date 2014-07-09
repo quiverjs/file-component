@@ -6,9 +6,9 @@ Object.defineProperties(exports, {
   __esModule: {value: true}
 });
 var watchFile = $traceurRuntime.assertObject(require('chokidar')).watch;
-var ConfigMiddleware = $traceurRuntime.assertObject(require('quiver-component')).ConfigMiddleware;
+var configMiddleware = $traceurRuntime.assertObject(require('quiver-component')).configMiddleware;
 var initKey = Symbol('middlewareInitialized');
-var watchFileMiddleware = new ConfigMiddleware((function(config) {
+var watchFileMiddleware = configMiddleware((function(config) {
   if (config[$traceurRuntime.toProperty(initKey)])
     return config;
   var dirPath = config.dirPath;

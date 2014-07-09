@@ -6,9 +6,9 @@ Object.defineProperties(exports, {
   __esModule: {value: true}
 });
 var normalize = $traceurRuntime.assertObject(require('path')).normalize;
-var ArgsFilter = $traceurRuntime.assertObject(require('quiver-component')).ArgsFilter;
+var argsFilter = $traceurRuntime.assertObject(require('quiver-component')).argsFilter;
 var normalized = Symbol('pathNormalized');
-var normalizePathFilter = new ArgsFilter((function(args) {
+var normalizePathFilter = argsFilter((function(args) {
   var $__1;
   if (args[$traceurRuntime.toProperty(normalized)])
     return args;

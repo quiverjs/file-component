@@ -6,13 +6,13 @@ Object.defineProperties(exports, {
   __esModule: {value: true}
 });
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    HandleableBuilder = $__0.HandleableBuilder,
+    handleableBuilder = $__0.handleableBuilder,
     loadSimpleHandler = $__0.loadSimpleHandler;
 var fileStreamMiddleware = $traceurRuntime.assertObject(require('./file-handler.js')).fileStreamMiddleware;
 var fileCacheMiddleware = $traceurRuntime.assertObject(require('./file-cache.js')).fileCacheMiddleware;
 var listDirMiddleware = $traceurRuntime.assertObject(require('./list-dir.js')).listDirMiddleware;
 var fileStatsMiddleware = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsMiddleware;
-var fileHandleable = new HandleableBuilder((function(config) {
+var fileHandleable = handleableBuilder((function(config) {
   var $__0 = $traceurRuntime.assertObject(config),
       fileHandler = $__0.fileHandler,
       fileCacheHandler = $__0.fileCacheHandler,
