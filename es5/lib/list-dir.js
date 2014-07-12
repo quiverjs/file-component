@@ -3,8 +3,8 @@ Object.defineProperties(exports, {
   listDirPathHandler: {get: function() {
       return listDirPathHandler;
     }},
-  listDirMiddleware: {get: function() {
-      return listDirMiddleware;
+  makeListDirPathHandler: {get: function() {
+      return makeListDirPathHandler;
     }},
   __esModule: {value: true}
 });
@@ -15,7 +15,7 @@ var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
     promisify = $__0.promisify;
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
     simpleHandlerBuilder = $__0.simpleHandlerBuilder,
-    privateInputMiddleware = $__0.privateInputMiddleware,
+    inputHandlerMiddleware = $__0.inputHandlerMiddleware,
     loadStreamHandler = $__0.loadStreamHandler;
 var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
 var watchFileMiddleware = $traceurRuntime.assertObject(require('./file-watch.js')).watchFileMiddleware;
@@ -51,4 +51,4 @@ var listDirPathHandler = simpleHandlerBuilder((function(config) {
     }));
   });
 }), 'void', 'json', {name: 'Quiver List Directory Path Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(fileStatsFilter);
-var listDirMiddleware = privateInputMiddleware(listDirPathHandler, 'listDirHandler', {loader: loadStreamHandler});
+var makeListDirPathHandler = listDirPathHandler.privatizedConstructor();

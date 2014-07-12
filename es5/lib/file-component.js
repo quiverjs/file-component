@@ -1,34 +1,29 @@
 "use strict";
 Object.defineProperties(exports, {
-  fileHandler: {get: function() {
-      return fileHandleable;
+  makeFileHandler: {get: function() {
+      return makeFileHandler;
     }},
-  fileStreamHandler: {get: function() {
-      return fileStreamHandler;
+  makeFileStatsHandler: {get: function() {
+      return makeFileStatsHandler;
     }},
-  fileStatsHandler: {get: function() {
-      return fileStatsHandler;
+  makeFileCacheHandler: {get: function() {
+      return makeFileCacheHandler;
     }},
-  fileCacheHandler: {get: function() {
-      return fileCacheHandler;
+  makeListDirPathHandler: {get: function() {
+      return makeListDirPathHandler;
     }},
-  listDirPathHandler: {get: function() {
-      return listDirPathHandler;
+  makeSingleFileHandler: {get: function() {
+      return makeSingleFileHandler;
     }},
-  normalizePathFilter: {get: function() {
-      return normalizePathFilter;
-    }},
-  singleFileHandler: {get: function() {
-      return singleFileHandler;
+  makeFileBundle: {get: function() {
+      return makeFileBundle;
     }},
   __esModule: {value: true}
 });
-require('traceur');
-var fileHandleable = $traceurRuntime.assertObject(require('./file-handleable.js')).fileHandleable;
-var fileStreamHandler = $traceurRuntime.assertObject(require('./file-handler.js')).fileStreamHandler;
-var fileStatsHandler = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsHandler;
-var fileCacheHandler = $traceurRuntime.assertObject(require('./file-cache.js')).fileCacheHandler;
-var listDirPathHandler = $traceurRuntime.assertObject(require('./list-dir.js')).listDirPathHandler;
-var normalizePathFilter = $traceurRuntime.assertObject(require('./normalize.js')).normalizePathFilter;
-var singleFileHandler = $traceurRuntime.assertObject(require('./single-file.js')).singleFileHandler;
+var makeFileHandler = $traceurRuntime.assertObject(require('./file-handler.js')).makeFileHandler;
+var makeFileStatsHandler = $traceurRuntime.assertObject(require('./file-stats.js')).makeFileStatsHandler;
+var makeFileCacheHandler = $traceurRuntime.assertObject(require('./file-cache.js')).makeFileCacheHandler;
+var makeListDirPathHandler = $traceurRuntime.assertObject(require('./list-dir.js')).makeListDirPathHandler;
+var makeSingleFileHandler = $traceurRuntime.assertObject(require('./single-file')).makeSingleFileHandler;
+var makeFileBundle = $traceurRuntime.assertObject(require('./file-bundle.js')).makeFileBundle;
 ;

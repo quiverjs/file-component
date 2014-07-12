@@ -9,6 +9,12 @@ Object.defineProperties(exports, {
   fileStatsFilter: {get: function() {
       return fileStatsFilter;
     }},
+  makeFileStatsHandler: {get: function() {
+      return makeFileStatsHandler;
+    }},
+  makeFileStatsFilter: {get: function() {
+      return makeFileStatsFilter;
+    }},
   __esModule: {value: true}
 });
 var $__0 = $traceurRuntime.assertObject(require('fs')),
@@ -24,7 +30,7 @@ var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
 var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
     argsBuilderFilter = $__0.argsBuilderFilter,
     simpleHandlerBuilder = $__0.simpleHandlerBuilder,
-    privateInputMiddleware = $__0.privateInputMiddleware;
+    inputHandlerMiddleware = $__0.inputHandlerMiddleware;
 var watchFileMiddleware = $traceurRuntime.assertObject(require('./file-watch.js')).watchFileMiddleware;
 var normalizePathFilter = $traceurRuntime.assertObject(require('./normalize.js')).normalizePathFilter;
 var statFile = promisify(stat);
@@ -34,8 +40,9 @@ var fileExists = (function(filePath) {
   }));
 });
 var initKey = Symbol('fileStatsInitialized');
-var fileStatsToJson = (function(stats) {
+var fileStatsToJson = (function(filePath, stats) {
   return ({
+    filePath: filePath,
     isFile: stats.isFile(),
     isDirectory: stats.isDirectory(),
     isSocket: stats.isSocket(),
@@ -57,6 +64,7 @@ var fileStatsToJson = (function(stats) {
 var fileStatsHandler = simpleHandlerBuilder((function(config) {
   var $__1;
   var $__0 = $traceurRuntime.assertObject(config),
+      dirPath = $__0.dirPath,
       fileEvents = $__0.fileEvents,
       cacheInterval = ($__1 = $__0.cacheInterval) === void 0 ? 300 * 1000 : $__1;
   var statsCache = {};
@@ -66,10 +74,10 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
     notFoundCache = {};
   }), cacheInterval);
   fileEvents.on('change', (function(filePath, fileStats) {
-    $traceurRuntime.setProperty(statsCache, filePath, fileStatsToJson(fileStats));
+    $traceurRuntime.setProperty(statsCache, filePath, fileStatsToJson(filePath, fileStats));
   }));
   fileEvents.on('add', (function(filePath, fileStats) {
-    $traceurRuntime.setProperty(statsCache, filePath, fileStatsToJson(fileStats));
+    $traceurRuntime.setProperty(statsCache, filePath, fileStatsToJson(filePath, fileStats));
     $traceurRuntime.setProperty(notFoundCache, filePath, false);
   }));
   fileEvents.on('unlink', (function(filePath) {
@@ -77,7 +85,10 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
     $traceurRuntime.setProperty(notFoundCache, filePath, true);
   }));
   return (function(args) {
-    var filePath = $traceurRuntime.assertObject(args).filePath;
+    var $__1;
+    var $__0 = $traceurRuntime.assertObject(args),
+        path = ($__1 = $__0.path) === void 0 ? '.' : $__1;
+    var filePath = joinPath(dirPath, path);
     if (statsCache[$traceurRuntime.toProperty(filePath)])
       return resolve(statsCache[$traceurRuntime.toProperty(filePath)]);
     if (notFoundCache[$traceurRuntime.toProperty(filePath)])
@@ -88,29 +99,28 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
         return reject(error(404, 'file not found'));
       }
       return statFile(filePath).then((function(stats) {
-        var fileStats = fileStatsToJson(stats);
+        var fileStats = fileStatsToJson(filePath, stats);
         $traceurRuntime.setProperty(statsCache, filePath, fileStats);
         return fileStats;
       }));
     }));
   });
 }), 'void', 'json', {name: 'Quiver File Stats Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(normalizePathFilter);
-var fileStatsMiddleware = privateInputMiddleware(fileStatsHandler, 'getFileStats');
+var fileStatsMiddleware = inputHandlerMiddleware(fileStatsHandler, 'getFileStats');
 var fileStatsFilter = argsBuilderFilter((function(config) {
   var $__0 = $traceurRuntime.assertObject(config),
       dirPath = $__0.dirPath,
       getFileStats = $__0.getFileStats;
   return (function(args) {
-    var $__1;
+    var path = $traceurRuntime.assertObject(args).path;
     if (args.filePath && args.fileStats)
       return args;
-    var $__0 = $traceurRuntime.assertObject(args),
-        path = ($__1 = $__0.path) === void 0 ? '.' : $__1;
-    var filePath = joinPath(dirPath, path);
-    return getFileStats({filePath: filePath}).then((function(fileStats) {
-      args.filePath = filePath;
+    return getFileStats({path: path}).then((function(fileStats) {
+      args.filePath = fileStats.filePath;
       args.fileStats = fileStats;
       return args;
     }));
   });
 }), {name: 'Quiver File Stats Filter'}).addMiddleware(fileStatsMiddleware);
+var makeFileStatsHandler = fileStatsHandler.privatizedConstructor();
+var makeFileStatsFilter = fileStatsFilter.privatizedConstructor();

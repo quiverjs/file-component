@@ -14,8 +14,9 @@ import {
 } from 'quiver-stream-util'
 
 import { 
-  fileHandler, fileStreamHandler,
-  singleFileHandler
+  makeFileHandler, makeFileCacheHandler, 
+  makeListDirPathHandler, makeFileBundle,
+  makeSingleFileHandler
 } from '../lib/file-component.js'
 
 var chai = require('chai')
@@ -42,8 +43,8 @@ describe('file component test', () => {
   var expectedResults = testFiles.map(
     file => readFileSync(file).toString())
 
-  it('file stream handler test', () =>
-    loadSimpleHandler({dirPath}, fileStreamHandler, 
+  it('file handler test', () =>
+    loadSimpleHandler({dirPath}, makeFileHandler(), 
       'void', 'text')
     .then(handler => {
       var args = { path: testPaths[0] }
@@ -52,8 +53,8 @@ describe('file component test', () => {
         expectedResults[0])
     }))
 
-  it('file handleable test', () => 
-    fileHandler.loadHandler({dirPath})
+  it('file handler test all', () => 
+    makeFileHandler().loadHandler({dirPath})
     .then(handler => 
       Promise.all(testPaths.map((path, index) =>
         handler({path}).then(streamableToText)
@@ -61,16 +62,10 @@ describe('file component test', () => {
           expectedResults[index])))))
 
   it('file cache id test', () =>
-    fileHandler.loadHandleable({dirPath})
-    .then(handleable => {
-      var cacheHandler = handleable.meta.cacheHandler
-      should.exist(cacheHandler)
-
+    makeFileCacheHandler().loadHandler({dirPath})
+    .then(cacheHandler => {
       var path = testPaths[1]
       var file = testFiles[1]
-
-      cacheHandler = streamToSimpleHandler(
-        cacheHandler, 'void', 'json')
 
       return cacheHandler({ path })
       .then(result1 => {
@@ -90,13 +85,8 @@ describe('file component test', () => {
     }))
 
   it('list path handler test', () =>
-    fileHandler.loadHandleable({dirPath}).then(handleable => {
-      var listPathHandler = handleable.meta.listPathHandler
-      should.exist(listPathHandler)
-
-      listPathHandler = streamToSimpleHandler(
-        listPathHandler, 'void', 'json')
-
+    makeListDirPathHandler().loadHandler({dirPath})
+    .then(listPathHandler => {
       var p1 = listPathHandler({ path: '/' })
       .then(result => {
         var files = result.subpaths
@@ -123,7 +113,7 @@ describe('file component test', () => {
     var filePath = testFiles[1]
     var expected = expectedResults[1]
 
-    return loadSimpleHandler({filePath}, singleFileHandler, 
+    return loadSimpleHandler({filePath}, makeSingleFileHandler(), 
       'void', 'text').then(handler =>
       handler({path:'/random'}).should.eventually.equal(expected))
   })
@@ -131,6 +121,9 @@ describe('file component test', () => {
   it('router test', () => {
     var filePath = testFiles[1]
     var expected = expectedResults[1]
+
+    var singleFileHandler = makeSingleFileHandler()
+    var fileHandler = makeFileHandler()
 
     var router = createRouter()
       .addStaticRoute(singleFileHandler, '/static-file')
@@ -144,7 +137,7 @@ describe('file component test', () => {
         .should.eventually.equal(expected)
 
       var p2 = handler({path: '/api/subdir/index.html'})
-        .should.eventually.equal(expectedResults[3])
+          .should.eventually.equal(expectedResults[3])
 
       return Promise.all([p1, p2])
     })
