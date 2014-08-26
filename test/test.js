@@ -16,7 +16,8 @@ import {
 import { 
   makeFileHandler, makeFileCacheHandler, 
   makeListDirPathHandler, makeFileBundle,
-  makeSingleFileHandler
+  makeIndexFileFilter,
+  makeSingleFileHandler,
 } from '../lib/file-component.js'
 
 var chai = require('chai')
@@ -141,5 +142,17 @@ describe('file component test', () => {
 
       return Promise.all([p1, p2])
     })
+  })
+
+  it('index path handler test', () => {
+    var privateTable = { }
+
+    var component = makeFileHandler(privateTable)
+      .addMiddleware(makeIndexFileFilter(privateTable))
+
+    return loadSimpleHandler({dirPath}, component, 'void', 'text')
+    .then(handler => 
+      handler({path: '/subdir'}).should.eventually.equal(
+        expectedResults[3]))
   })
 })

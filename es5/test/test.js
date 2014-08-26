@@ -17,6 +17,7 @@ var $__0 = $traceurRuntime.assertObject(require('../lib/file-component.js')),
     makeFileCacheHandler = $__0.makeFileCacheHandler,
     makeListDirPathHandler = $__0.makeListDirPathHandler,
     makeFileBundle = $__0.makeFileBundle,
+    makeIndexFileFilter = $__0.makeIndexFileFilter,
     makeSingleFileHandler = $__0.makeSingleFileHandler;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -102,6 +103,13 @@ describe('file component test', (function() {
       var p1 = handler({path: '/static-file'}).should.eventually.equal(expected);
       var p2 = handler({path: '/api/subdir/index.html'}).should.eventually.equal(expectedResults[3]);
       return Promise.all([p1, p2]);
+    }));
+  }));
+  it('index path handler test', (function() {
+    var privateTable = {};
+    var component = makeFileHandler(privateTable).addMiddleware(makeIndexFileFilter(privateTable));
+    return loadSimpleHandler({dirPath: dirPath}, component, 'void', 'text').then((function(handler) {
+      return handler({path: '/subdir'}).should.eventually.equal(expectedResults[3]);
     }));
   }));
 }));

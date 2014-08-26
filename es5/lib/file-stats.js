@@ -39,7 +39,6 @@ var fileExists = (function(filePath) {
     return exists(filePath, resolve);
   }));
 });
-var initKey = Symbol('fileStatsInitialized');
 var fileStatsToJson = (function(filePath, stats) {
   return ({
     filePath: filePath,

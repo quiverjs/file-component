@@ -2,15 +2,21 @@ import 'traceur'
 
 import { join as joinPath } from 'path'
 import { startServer } from 'quiver-http'
-import { makeFileHandler } from '../lib/file-component.js'
+import { makeFileBundle } from '../lib/file-component.js'
 
 var config = {
-  dirPath: './test-content'
+  dirPath: './test-content',
+  serverListen: 8080
 }
 
-var fileHandler = makeFileHandler()
+var { 
+  fileHandler,
+  indexFileFilter
+} = makeFileBundle()
 
-startServer(fileHandler, config, 8080)
+fileHandler.addMiddleware(indexFileFilter)
+
+startServer(fileHandler, config)
 .then(server => {
   console.log('simple file server running at port 8080...')
 })

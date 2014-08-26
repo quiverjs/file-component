@@ -12,6 +12,9 @@ Object.defineProperties(exports, {
   makeListDirPathHandler: {get: function() {
       return makeListDirPathHandler;
     }},
+  makeIndexFileFilter: {get: function() {
+      return makeIndexFileFilter;
+    }},
   makeSingleFileHandler: {get: function() {
       return makeSingleFileHandler;
     }},
@@ -24,6 +27,7 @@ var makeFileHandler = $traceurRuntime.assertObject(require('./file-handler.js'))
 var makeFileStatsHandler = $traceurRuntime.assertObject(require('./file-stats.js')).makeFileStatsHandler;
 var makeFileCacheHandler = $traceurRuntime.assertObject(require('./file-cache.js')).makeFileCacheHandler;
 var makeListDirPathHandler = $traceurRuntime.assertObject(require('./list-dir.js')).makeListDirPathHandler;
+var makeIndexFileFilter = $traceurRuntime.assertObject(require('./file-index.js')).makeIndexFileFilter;
 var makeSingleFileHandler = $traceurRuntime.assertObject(require('./single-file')).makeSingleFileHandler;
 var makeFileBundle = $traceurRuntime.assertObject(require('./file-bundle.js')).makeFileBundle;
 ;
