@@ -8,16 +8,22 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var stat = $traceurRuntime.assertObject(require('fs')).stat;
-var error = $traceurRuntime.assertObject(require('quiver-error')).error;
-var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
-    promisify = $__0.promisify,
-    reject = $__0.reject;
-var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    argsFilter = $__0.argsFilter,
-    configMiddleware = $__0.configMiddleware,
-    extendHandler = $__0.extendHandler;
-var makeFileHandler = $traceurRuntime.assertObject(require('./file-handler.js')).makeFileHandler;
+var $__quiver_45_error__,
+    $__quiver_45_promise__,
+    $__quiver_45_component__,
+    $__file_45_handler_46_js__,
+    $__fs__;
+var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
+var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+    promisify = $__1.promisify,
+    reject = $__1.reject;
+var $__2 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+    argsFilter = $__2.argsFilter,
+    configMiddleware = $__2.configMiddleware,
+    extendHandler = $__2.extendHandler;
+var makeFileHandler = ($__file_45_handler_46_js__ = require("./file-handler.js"), $__file_45_handler_46_js__ && $__file_45_handler_46_js__.__esModule && $__file_45_handler_46_js__ || {default: $__file_45_handler_46_js__}).makeFileHandler;
+var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
+var stat = fs.stat;
 var statFile = promisify(stat);
 var singleFilePathFilter = argsFilter((function(args) {
   args.path = '.';

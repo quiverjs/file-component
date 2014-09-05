@@ -1,6 +1,11 @@
 import 'traceur'
-import { readFileSync } from 'fs'
-import { join as joinPath } from 'path'
+
+import fs from 'fs'
+var { readFileSync } = fs
+
+import pathLib from 'path'
+var { join: joinPath } = pathLib
+
 import { promisify, timeout } from 'quiver-promise'
 import { streamToSimpleHandler } from 'quiver-simple-handler'
 

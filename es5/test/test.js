@@ -1,24 +1,34 @@
 "use strict";
-require('traceur');
-var readFileSync = $traceurRuntime.assertObject(require('fs')).readFileSync;
-var joinPath = $traceurRuntime.assertObject(require('path')).join;
-var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
-    promisify = $__0.promisify,
-    timeout = $__0.timeout;
-var streamToSimpleHandler = $traceurRuntime.assertObject(require('quiver-simple-handler')).streamToSimpleHandler;
-var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    loadSimpleHandler = $__0.loadSimpleHandler,
-    createRouter = $__0.router;
-var $__0 = $traceurRuntime.assertObject(require('quiver-stream-util')),
-    streamableToText = $__0.streamableToText,
-    emptyStreamable = $__0.emptyStreamable;
-var $__0 = $traceurRuntime.assertObject(require('../lib/file-component.js')),
-    makeFileHandler = $__0.makeFileHandler,
-    makeFileCacheHandler = $__0.makeFileCacheHandler,
-    makeListDirPathHandler = $__0.makeListDirPathHandler,
-    makeFileBundle = $__0.makeFileBundle,
-    makeIndexFileFilter = $__0.makeIndexFileFilter,
-    makeSingleFileHandler = $__0.makeSingleFileHandler;
+var $__traceur_64_0_46_0_46_58__,
+    $__fs__,
+    $__path__,
+    $__quiver_45_promise__,
+    $__quiver_45_simple_45_handler__,
+    $__quiver_45_component__,
+    $__quiver_45_stream_45_util__,
+    $___46__46__47_lib_47_file_45_component_46_js__;
+($__traceur_64_0_46_0_46_58__ = require("traceur"), $__traceur_64_0_46_0_46_58__ && $__traceur_64_0_46_0_46_58__.__esModule && $__traceur_64_0_46_0_46_58__ || {default: $__traceur_64_0_46_0_46_58__});
+var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
+var readFileSync = fs.readFileSync;
+var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
+var joinPath = pathLib.join;
+var $__2 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+    promisify = $__2.promisify,
+    timeout = $__2.timeout;
+var streamToSimpleHandler = ($__quiver_45_simple_45_handler__ = require("quiver-simple-handler"), $__quiver_45_simple_45_handler__ && $__quiver_45_simple_45_handler__.__esModule && $__quiver_45_simple_45_handler__ || {default: $__quiver_45_simple_45_handler__}).streamToSimpleHandler;
+var $__4 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+    loadSimpleHandler = $__4.loadSimpleHandler,
+    createRouter = $__4.router;
+var $__5 = ($__quiver_45_stream_45_util__ = require("quiver-stream-util"), $__quiver_45_stream_45_util__ && $__quiver_45_stream_45_util__.__esModule && $__quiver_45_stream_45_util__ || {default: $__quiver_45_stream_45_util__}),
+    streamableToText = $__5.streamableToText,
+    emptyStreamable = $__5.emptyStreamable;
+var $__6 = ($___46__46__47_lib_47_file_45_component_46_js__ = require("../lib/file-component.js"), $___46__46__47_lib_47_file_45_component_46_js__ && $___46__46__47_lib_47_file_45_component_46_js__.__esModule && $___46__46__47_lib_47_file_45_component_46_js__ || {default: $___46__46__47_lib_47_file_45_component_46_js__}),
+    makeFileHandler = $__6.makeFileHandler,
+    makeFileCacheHandler = $__6.makeFileCacheHandler,
+    makeListDirPathHandler = $__6.makeListDirPathHandler,
+    makeFileBundle = $__6.makeFileBundle,
+    makeIndexFileFilter = $__6.makeIndexFileFilter,
+    makeSingleFileHandler = $__6.makeSingleFileHandler;
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);

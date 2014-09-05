@@ -8,18 +8,23 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var error = $traceurRuntime.assertObject(require('quiver-error')).error;
-var reject = $traceurRuntime.assertObject(require('quiver-promise')).reject;
-var fileStreamable = $traceurRuntime.assertObject(require('quiver-file-stream')).fileStreamable;
-var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    simpleHandlerBuilder = $__0.simpleHandlerBuilder,
-    inputHandlerMiddleware = $__0.inputHandlerMiddleware;
-var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
+var $__quiver_45_error__,
+    $__quiver_45_promise__,
+    $__quiver_45_file_45_stream__,
+    $__quiver_45_component__,
+    $__file_45_stats_46_js__;
+var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
+var reject = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).reject;
+var fileStreamable = ($__quiver_45_file_45_stream__ = require("quiver-file-stream"), $__quiver_45_file_45_stream__ && $__quiver_45_file_45_stream__.__esModule && $__quiver_45_file_45_stream__ || {default: $__quiver_45_file_45_stream__}).fileStreamable;
+var $__3 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+    simpleHandlerBuilder = $__3.simpleHandlerBuilder,
+    inputHandlerMiddleware = $__3.inputHandlerMiddleware;
+var fileStatsFilter = ($__file_45_stats_46_js__ = require("./file-stats.js"), $__file_45_stats_46_js__ && $__file_45_stats_46_js__.__esModule && $__file_45_stats_46_js__ || {default: $__file_45_stats_46_js__}).fileStatsFilter;
 var fileHandler = simpleHandlerBuilder((function(config) {
   return (function(args) {
-    var $__0 = $traceurRuntime.assertObject(args),
-        fileStats = $__0.fileStats,
-        filePath = $__0.filePath;
+    var $__5 = args,
+        fileStats = $__5.fileStats,
+        filePath = $__5.filePath;
     if (!fileStats.isFile)
       return reject(error(404, 'path is not a file'));
     return fileStreamable(filePath, fileStats);

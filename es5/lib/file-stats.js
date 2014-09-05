@@ -17,22 +17,31 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var $__0 = $traceurRuntime.assertObject(require('fs')),
-    exists = $__0.exists,
-    stat = $__0.stat;
-var error = $traceurRuntime.assertObject(require('quiver-error')).error;
-var joinPath = $traceurRuntime.assertObject(require('path')).join;
-var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
-    resolve = $__0.resolve,
-    reject = $__0.reject,
-    promisify = $__0.promisify,
-    createPromise = $__0.createPromise;
-var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    argsBuilderFilter = $__0.argsBuilderFilter,
-    simpleHandlerBuilder = $__0.simpleHandlerBuilder,
-    inputHandlerMiddleware = $__0.inputHandlerMiddleware;
-var watchFileMiddleware = $traceurRuntime.assertObject(require('./file-watch.js')).watchFileMiddleware;
-var normalizePathFilter = $traceurRuntime.assertObject(require('./normalize.js')).normalizePathFilter;
+var $__quiver_45_error__,
+    $__quiver_45_promise__,
+    $__fs__,
+    $__path__,
+    $__quiver_45_component__,
+    $__file_45_watch_46_js__,
+    $__normalize_46_js__;
+var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
+var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+    resolve = $__1.resolve,
+    reject = $__1.reject,
+    promisify = $__1.promisify,
+    createPromise = $__1.createPromise;
+var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
+var $__7 = fs,
+    exists = $__7.exists,
+    stat = $__7.stat;
+var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
+var joinPath = pathLib.join;
+var $__4 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+    argsBuilderFilter = $__4.argsBuilderFilter,
+    simpleHandlerBuilder = $__4.simpleHandlerBuilder,
+    inputHandlerMiddleware = $__4.inputHandlerMiddleware;
+var watchFileMiddleware = ($__file_45_watch_46_js__ = require("./file-watch.js"), $__file_45_watch_46_js__ && $__file_45_watch_46_js__.__esModule && $__file_45_watch_46_js__ || {default: $__file_45_watch_46_js__}).watchFileMiddleware;
+var normalizePathFilter = ($__normalize_46_js__ = require("./normalize.js"), $__normalize_46_js__ && $__normalize_46_js__.__esModule && $__normalize_46_js__ || {default: $__normalize_46_js__}).normalizePathFilter;
 var statFile = promisify(stat);
 var fileExists = (function(filePath) {
   return createPromise((function(resolve) {
@@ -61,11 +70,11 @@ var fileStatsToJson = (function(filePath, stats) {
   });
 });
 var fileStatsHandler = simpleHandlerBuilder((function(config) {
-  var $__1;
-  var $__0 = $traceurRuntime.assertObject(config),
-      dirPath = $__0.dirPath,
-      fileEvents = $__0.fileEvents,
-      cacheInterval = ($__1 = $__0.cacheInterval) === void 0 ? 300 * 1000 : $__1;
+  var $__8;
+  var $__7 = config,
+      dirPath = $__7.dirPath,
+      fileEvents = $__7.fileEvents,
+      cacheInterval = ($__8 = $__7.cacheInterval) === void 0 ? 300 * 1000 : $__8;
   var statsCache = {};
   var notFoundCache = {};
   setInterval((function() {
@@ -84,9 +93,9 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
     $traceurRuntime.setProperty(notFoundCache, filePath, true);
   }));
   return (function(args) {
-    var $__1;
-    var $__0 = $traceurRuntime.assertObject(args),
-        path = ($__1 = $__0.path) === void 0 ? '.' : $__1;
+    var $__9;
+    var $__7 = args,
+        path = ($__9 = $__7.path) === void 0 ? '.' : $__9;
     var filePath = joinPath(dirPath, path);
     if (statsCache[$traceurRuntime.toProperty(filePath)])
       return resolve(statsCache[$traceurRuntime.toProperty(filePath)]);
@@ -107,11 +116,11 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
 }), 'void', 'json', {name: 'Quiver File Stats Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(normalizePathFilter);
 var fileStatsMiddleware = inputHandlerMiddleware(fileStatsHandler, 'getFileStats');
 var fileStatsFilter = argsBuilderFilter((function(config) {
-  var $__0 = $traceurRuntime.assertObject(config),
-      dirPath = $__0.dirPath,
-      getFileStats = $__0.getFileStats;
+  var $__8 = config,
+      dirPath = $__8.dirPath,
+      getFileStats = $__8.getFileStats;
   return (function(args) {
-    var path = $traceurRuntime.assertObject(args).path;
+    var path = args.path;
     if (args.filePath && args.fileStats)
       return args;
     return getFileStats({path: path}).then((function(fileStats) {

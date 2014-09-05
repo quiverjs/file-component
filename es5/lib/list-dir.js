@@ -8,23 +8,30 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var readdir = $traceurRuntime.assertObject(require('fs')).readdir;
-var simpleHandler = $traceurRuntime.assertObject(require('quiver-component')).simpleHandler;
-var $__0 = $traceurRuntime.assertObject(require('quiver-promise')),
-    reject = $__0.reject,
-    promisify = $__0.promisify;
-var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
-    simpleHandlerBuilder = $__0.simpleHandlerBuilder,
-    inputHandlerMiddleware = $__0.inputHandlerMiddleware,
-    loadStreamHandler = $__0.loadStreamHandler;
-var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
-var watchFileMiddleware = $traceurRuntime.assertObject(require('./file-watch.js')).watchFileMiddleware;
+var $__quiver_45_component__,
+    $__quiver_45_promise__,
+    $__quiver_45_component__,
+    $__fs__,
+    $__file_45_stats_46_js__,
+    $__file_45_watch_46_js__;
+var simpleHandler = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}).simpleHandler;
+var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+    reject = $__1.reject,
+    promisify = $__1.promisify;
+var $__2 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+    simpleHandlerBuilder = $__2.simpleHandlerBuilder,
+    inputHandlerMiddleware = $__2.inputHandlerMiddleware,
+    loadStreamHandler = $__2.loadStreamHandler;
+var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
+var readdir = fs.readdir;
+var fileStatsFilter = ($__file_45_stats_46_js__ = require("./file-stats.js"), $__file_45_stats_46_js__ && $__file_45_stats_46_js__.__esModule && $__file_45_stats_46_js__ || {default: $__file_45_stats_46_js__}).fileStatsFilter;
+var watchFileMiddleware = ($__file_45_watch_46_js__ = require("./file-watch.js"), $__file_45_watch_46_js__ && $__file_45_watch_46_js__.__esModule && $__file_45_watch_46_js__ || {default: $__file_45_watch_46_js__}).watchFileMiddleware;
 var readDirectory = promisify(readdir);
 var listDirPathHandler = simpleHandlerBuilder((function(config) {
-  var $__1;
-  var $__0 = $traceurRuntime.assertObject(config),
-      fileEvents = $__0.fileEvents,
-      cacheInterval = ($__1 = $__0.cacheInterval) === void 0 ? 300 * 1000 : $__1;
+  var $__7;
+  var $__6 = config,
+      fileEvents = $__6.fileEvents,
+      cacheInterval = ($__7 = $__6.cacheInterval) === void 0 ? 300 * 1000 : $__7;
   var dirCache = {};
   setInterval((function() {
     dirCache = {};
@@ -37,9 +44,9 @@ var listDirPathHandler = simpleHandlerBuilder((function(config) {
   fileEvents.on('addDir', removeCache);
   fileEvents.on('unlinkDir', removeCache);
   return (function(args) {
-    var $__0 = $traceurRuntime.assertObject(args),
-        filePath = $__0.filePath,
-        fileStats = $__0.fileStats;
+    var $__6 = args,
+        filePath = $__6.filePath,
+        fileStats = $__6.fileStats;
     if (!fileStats.isDirectory)
       return reject(error(404, 'path is not a directory'));
     var subpaths = dirCache[$traceurRuntime.toProperty(filePath)];

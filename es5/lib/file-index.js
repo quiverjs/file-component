@@ -8,14 +8,21 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var $__0 = $traceurRuntime.assertObject(require('quiver-component')),
+var $__quiver_45_component__,
+    $__quiver_45_error__,
+    $__quiver_45_promise__,
+    $__path__,
+    $__file_45_stats_46_js__,
+    $__list_45_dir_46_js__;
+var $__0 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
     argsBuilderFilter = $__0.argsBuilderFilter,
     inputHandlerMiddleware = $__0.inputHandlerMiddleware;
-var error = $traceurRuntime.assertObject(require('quiver-error')).error;
-var async = $traceurRuntime.assertObject(require('quiver-promise')).async;
-var joinPath = $traceurRuntime.assertObject(require('path')).join;
-var fileStatsFilter = $traceurRuntime.assertObject(require('./file-stats.js')).fileStatsFilter;
-var listDirPathHandler = $traceurRuntime.assertObject(require('./list-dir.js')).listDirPathHandler;
+var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
+var async = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).async;
+var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
+var joinPath = pathLib.join;
+var fileStatsFilter = ($__file_45_stats_46_js__ = require("./file-stats.js"), $__file_45_stats_46_js__ && $__file_45_stats_46_js__.__esModule && $__file_45_stats_46_js__ || {default: $__file_45_stats_46_js__}).fileStatsFilter;
+var listDirPathHandler = ($__list_45_dir_46_js__ = require("./list-dir.js"), $__list_45_dir_46_js__ && $__list_45_dir_46_js__.__esModule && $__list_45_dir_46_js__ || {default: $__list_45_dir_46_js__}).listDirPathHandler;
 var defaultIndexes = ['index.html'];
 var getIndexFile = (function(indexNames, files) {
   for (var i = 0; i < indexNames.length; i++) {
@@ -27,27 +34,25 @@ var getIndexFile = (function(indexNames, files) {
   return null;
 });
 var indexFileFilter = argsBuilderFilter((function(config) {
-  var $__1;
-  var $__0 = $traceurRuntime.assertObject(config),
-      indexFiles = ($__1 = $__0.indexFiles) === void 0 ? defaultIndexes : $__1,
-      listPathHandler = $__0.listPathHandler;
-  return async($traceurRuntime.initGeneratorFunction(function $__2(args) {
-    var $__0,
+  var $__7;
+  var $__6 = config,
+      indexFiles = ($__7 = $__6.indexFiles) === void 0 ? defaultIndexes : $__7,
+      listPathHandler = $__6.listPathHandler;
+  return async($traceurRuntime.initGeneratorFunction(function $__8(args) {
+    var $__6,
         path,
         filePath,
         fileStats,
         subpaths,
         indexFile,
-        $__3,
-        $__4,
-        $__5,
-        $__6,
-        $__7;
+        $__9,
+        $__10,
+        $__11;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
         switch ($ctx.state) {
           case 0:
-            $__0 = $traceurRuntime.assertObject(args), path = $__0.path, filePath = $__0.filePath, fileStats = $__0.fileStats;
+            $__6 = args, path = $__6.path, filePath = $__6.filePath, fileStats = $__6.fileStats;
             $ctx.state = 15;
             break;
           case 15:
@@ -58,21 +63,19 @@ var indexFileFilter = argsBuilderFilter((function(config) {
             $ctx.state = -2;
             break;
           case 2:
-            $__3 = $traceurRuntime.assertObject;
-            $__4 = listPathHandler({path: path});
+            $__9 = listPathHandler({path: path});
             $ctx.state = 9;
             break;
           case 9:
             $ctx.state = 5;
-            return $__4;
+            return $__9;
           case 5:
-            $__5 = $ctx.sent;
+            $__10 = $ctx.sent;
             $ctx.state = 7;
             break;
           case 7:
-            $__6 = $__3.call($traceurRuntime, $__5);
-            $__7 = $__6.subpaths;
-            subpaths = $__7;
+            $__11 = $__10.subpaths;
+            subpaths = $__11;
             $ctx.state = 11;
             break;
           case 11:
@@ -91,7 +94,7 @@ var indexFileFilter = argsBuilderFilter((function(config) {
           default:
             return $ctx.end();
         }
-    }, $__2, this);
+    }, $__8, this);
   }));
 })).addMiddleware(inputHandlerMiddleware(listDirPathHandler, 'listPathHandler')).addMiddleware(fileStatsFilter);
 var makeIndexFileFilter = indexFileFilter.privatizedConstructor();
