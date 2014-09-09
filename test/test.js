@@ -6,7 +6,7 @@ var { readFileSync } = fs
 import pathLib from 'path'
 var { join: joinPath } = pathLib
 
-import { promisify, timeout } from 'quiver-promise'
+import { async, promisify, timeout } from 'quiver-promise'
 import { streamToSimpleHandler } from 'quiver-simple-handler'
 
 import { 
@@ -19,10 +19,10 @@ import {
 } from 'quiver-stream-util'
 
 import { 
-  makeFileHandler, makeFileCacheHandler, 
-  makeListDirPathHandler, makeFileBundle,
-  makeIndexFileFilter,
-  makeSingleFileHandler,
+  fileHandler, fileCacheHandler, 
+  listDirPathHandler, 
+  indexFileFilter,
+  singleFileHandler,
 } from '../lib/file-component.js'
 
 var chai = require('chai')
@@ -49,115 +49,109 @@ describe('file component test', () => {
   var expectedResults = testFiles.map(
     file => readFileSync(file).toString())
 
-  it('file handler test', () =>
-    loadSimpleHandler({dirPath}, makeFileHandler(), 
+  it('file handler test', async(function*() {
+    var handler = yield loadSimpleHandler(
+      {dirPath}, fileHandler(), 'void', 'text')
+
+    var args = { path: testPaths[0] }
+
+    yield handler(args).should.eventually.equal(
+      expectedResults[0])
+  }))
+
+  it('file handler test all', async(function*() {
+    var handler = yield fileHandler().loadHandler({dirPath})
+
+    yield Promise.all(testPaths.map(
+      (path, index) =>
+        handler({path})
+          .then(streamableToText)
+          .should.eventually.equal(
+            expectedResults[index])))
+  }))
+
+  it('file cache id test', async(function*() {
+    var cacheHandler = yield fileCacheHandler()
+      .loadHandler({dirPath})
+
+    var path = testPaths[1]
+    var file = testFiles[1]
+
+    var result1 = yield cacheHandler({ path })
+    should.exist(result1.cacheId)
+    should.exist(result1.lastModified)
+
+    yield touch(file, {}).then(() => timeout(100))
+    var result2 = yield cacheHandler({ path })
+
+    should.equal(result1.cacheId, result2.cacheId)
+
+    should.not.equal(result1.lastModified, 
+      result2.lastModified)
+  }))
+
+  it('list path handler test', async(function*() {
+    var listPathHandler = yield listDirPathHandler()
+      .loadHandler({dirPath})
+
+    var { subpaths: files } = yield listPathHandler(
+      { path: '/' })
+
+    should.equal(files.length, 3)
+    should.equal(files[0], '00.txt')
+    should.equal(files[1], '01.txt')
+    should.equal(files[2], 'subdir')
+
+    var { subpaths: files } = yield listPathHandler(
+      { path: 'subdir' })
+
+    should.equal(files.length, 2)
+    should.equal(files[0], '02.txt')
+    should.equal(files[1], 'index.html')
+  }))
+
+  it('single file handler', async(function*() {
+    var filePath = testFiles[1]
+    var expected = expectedResults[1]
+
+    var handler = yield loadSimpleHandler(
+      {filePath}, singleFileHandler(), 
       'void', 'text')
-    .then(handler => {
-      var args = { path: testPaths[0] }
 
-      return handler(args).should.eventually.equal(
-        expectedResults[0])
-    }))
+    yield handler({path:'/random'})
+      .should.eventually.equal(expected)
+  }))
 
-  it('file handler test all', () => 
-    makeFileHandler().loadHandler({dirPath})
-    .then(handler => 
-      Promise.all(testPaths.map((path, index) =>
-        handler({path}).then(streamableToText)
-        .should.eventually.equal(
-          expectedResults[index])))))
-
-  it('file cache id test', () =>
-    makeFileCacheHandler().loadHandler({dirPath})
-    .then(cacheHandler => {
-      var path = testPaths[1]
-      var file = testFiles[1]
-
-      return cacheHandler({ path })
-      .then(result1 => {
-        should.exist(result1.cacheId)
-        should.exist(result1.lastModified)
-
-        return touch(file, {}).then(() => timeout(100))
-        .then(() => 
-          cacheHandler({ path })
-          .then(result2 => {
-            should.equal(result1.cacheId, result2.cacheId)
-
-            should.not.equal(result1.lastModified, 
-              result2.lastModified)
-          }))
-      })
-    }))
-
-  it('list path handler test', () =>
-    makeListDirPathHandler().loadHandler({dirPath})
-    .then(listPathHandler => {
-      var p1 = listPathHandler({ path: '/' })
-      .then(result => {
-        var files = result.subpaths
-
-        should.equal(files.length, 3)
-        should.equal(files[0], '00.txt')
-        should.equal(files[1], '01.txt')
-        should.equal(files[2], 'subdir')
-      })
-
-      var p2 = listPathHandler({ path: 'subdir' })
-      .then(result => {
-        var files = result.subpaths
-
-        should.equal(files.length, 2)
-        should.equal(files[0], '02.txt')
-        should.equal(files[1], 'index.html')
-      })
-
-      return Promise.all([p1, p2])
-    }))
-
-  it('single file handler', () => {
+  it('router test', async(function*() {
     var filePath = testFiles[1]
     var expected = expectedResults[1]
-
-    return loadSimpleHandler({filePath}, makeSingleFileHandler(), 
-      'void', 'text').then(handler =>
-      handler({path:'/random'}).should.eventually.equal(expected))
-  })
-
-  it('router test', () => {
-    var filePath = testFiles[1]
-    var expected = expectedResults[1]
-
-    var singleFileHandler = makeSingleFileHandler()
-    var fileHandler = makeFileHandler()
 
     var router = createRouter()
-      .addStaticRoute(singleFileHandler, '/static-file')
-      .addParamRoute(fileHandler, '/api/:restpath')
+      .addStaticRoute(singleFileHandler(), '/static-file')
+      .addParamRoute(fileHandler(), '/api/:restpath')
 
     var config = { filePath, dirPath }
     
-    return loadSimpleHandler(config, router, 'void', 'text')
-    .then(handler => {
-      var p1 = handler({path: '/static-file'})
-        .should.eventually.equal(expected)
+    var handler = yield loadSimpleHandler(
+      config, router, 'void', 'text')
 
-      var p2 = handler({path: '/api/subdir/index.html'})
-          .should.eventually.equal(expectedResults[3])
+    yield handler({path: '/static-file'})
+      .should.eventually.equal(expected)
 
-      return Promise.all([p1, p2])
-    })
-  })
+    yield handler({path: '/api/subdir/index.html'})
+        .should.eventually.equal(expectedResults[3])
+  }))
 
-  it('index path handler test', () => {
+  it('index path handler test', async(function*() {
     var privateTable = { }
 
-    var component = makeFileHandler(privateTable)
-      .addMiddleware(makeIndexFileFilter(privateTable))
+    var component = fileHandler(privateTable)
+      .addMiddleware(indexFileFilter(privateTable))
 
-    return loadSimpleHandler({dirPath}, component, 'void', 'text')
-    .then(handler => 
-      handler({path: '/subdir'}).should.eventually.equal(
-        expectedResults[3]))
-  })
+    var handler = yield loadSimpleHandler(
+      {dirPath}, component, 'void', 'text')
+    
+    yield handler({path: '/subdir'})
+      .should.eventually.equal(expectedResults[3])
+  }))
 })

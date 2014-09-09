@@ -1,24 +1,24 @@
 "use strict";
 Object.defineProperties(exports, {
-  makeFileHandler: {get: function() {
+  fileHandler: {get: function() {
       return makeFileHandler;
     }},
-  makeFileStatsHandler: {get: function() {
+  fileStatsHandler: {get: function() {
       return makeFileStatsHandler;
     }},
-  makeFileCacheHandler: {get: function() {
+  fileCacheHandler: {get: function() {
       return makeFileCacheHandler;
     }},
-  makeListDirPathHandler: {get: function() {
+  listDirPathHandler: {get: function() {
       return makeListDirPathHandler;
     }},
-  makeIndexFileFilter: {get: function() {
+  indexFileFilter: {get: function() {
       return makeIndexFileFilter;
     }},
-  makeSingleFileHandler: {get: function() {
+  singleFileHandler: {get: function() {
       return makeSingleFileHandler;
     }},
-  makeFileBundle: {get: function() {
+  fileBundle: {get: function() {
       return makeFileBundle;
     }},
   __esModule: {value: true}
