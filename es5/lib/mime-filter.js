@@ -15,15 +15,15 @@ var contentTypeFilter = streamFilter((function(config, handler) {
   return async($traceurRuntime.initGeneratorFunction(function $__5(args, inputStreamable) {
     var $__4,
         $__3,
-        path,
+        filePath,
         contentType,
         resultStreamable;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
         switch ($ctx.state) {
           case 0:
-            $__3 = args, path = ($__4 = $__3.path) === void 0 ? '/' : $__4;
-            contentType = mime.lookup(path);
+            $__3 = args, filePath = ($__4 = $__3.filePath) === void 0 ? '/' : $__4;
+            contentType = mime.lookup(filePath);
             $ctx.state = 8;
             break;
           case 8:
