@@ -21,9 +21,9 @@ var hash = (function(string) {
   return checksum.digest('hex');
 });
 var fileCacheHandler = simpleHandler((function(args) {
-  var $__3 = args,
-      filePath = $__3.filePath,
-      fileStats = $__3.fileStats;
+  var $__4 = args,
+      filePath = $__4.filePath,
+      fileStats = $__4.fileStats;
   var cacheId = hash(filePath);
   var lastModified = fileStats.mtime;
   return {

@@ -12,12 +12,12 @@ var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule &&
 var normalize = pathLib.normalize;
 var normalized = Symbol('pathNormalized');
 var normalizePathFilter = argsFilter((function(args) {
-  var $__3;
-  if (args[$traceurRuntime.toProperty(normalized)])
+  var $__4;
+  if (args[normalized])
     return args;
-  var $__2 = args,
-      path = ($__3 = $__2.path) === void 0 ? '/' : $__3;
-  $traceurRuntime.setProperty(args, normalized, true);
+  var $__3 = args,
+      path = ($__4 = $__3.path) === void 0 ? '/' : $__4;
+  args[normalized] = true;
   args.path = normalize(path);
   return args;
 }), {name: 'Quiver Normalize Path Filter'});

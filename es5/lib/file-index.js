@@ -26,7 +26,7 @@ var listDirPathHandler = ($__list_45_dir_46_js__ = require("./list-dir.js"), $__
 var defaultIndexes = ['index.html'];
 var getIndexFile = (function(indexNames, files) {
   for (var i = 0; i < indexNames.length; i++) {
-    var indexName = indexNames[$traceurRuntime.toProperty(i)];
+    var indexName = indexNames[i];
     var index = files.indexOf(indexName);
     if (index > -1)
       return indexName;
@@ -34,25 +34,25 @@ var getIndexFile = (function(indexNames, files) {
   return null;
 });
 var indexFileFilter = argsBuilderFilter((function(config) {
-  var $__7;
-  var $__6 = config,
-      indexFiles = ($__7 = $__6.indexFiles) === void 0 ? defaultIndexes : $__7,
-      listPathHandler = $__6.listPathHandler;
-  return async($traceurRuntime.initGeneratorFunction(function $__8(args) {
-    var $__6,
+  var $__8;
+  var $__7 = config,
+      indexFiles = ($__8 = $__7.indexFiles) === void 0 ? defaultIndexes : $__8,
+      listPathHandler = $__7.listPathHandler;
+  return async($traceurRuntime.initGeneratorFunction(function $__11(args) {
+    var $__9,
         path,
         filePath,
         fileStats,
         subpaths,
         indexFile,
-        $__9,
-        $__10,
-        $__11;
+        $__12,
+        $__13,
+        $__14;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
         switch ($ctx.state) {
           case 0:
-            $__6 = args, path = $__6.path, filePath = $__6.filePath, fileStats = $__6.fileStats;
+            $__9 = args, path = $__9.path, filePath = $__9.filePath, fileStats = $__9.fileStats;
             $ctx.state = 15;
             break;
           case 15:
@@ -63,19 +63,19 @@ var indexFileFilter = argsBuilderFilter((function(config) {
             $ctx.state = -2;
             break;
           case 2:
-            $__9 = listPathHandler({path: path});
+            $__12 = listPathHandler({path: path});
             $ctx.state = 9;
             break;
           case 9:
             $ctx.state = 5;
-            return $__9;
+            return $__12;
           case 5:
-            $__10 = $ctx.sent;
+            $__13 = $ctx.sent;
             $ctx.state = 7;
             break;
           case 7:
-            $__11 = $__10.subpaths;
-            subpaths = $__11;
+            $__14 = $__13.subpaths;
+            subpaths = $__14;
             $ctx.state = 11;
             break;
           case 11:
@@ -94,7 +94,7 @@ var indexFileFilter = argsBuilderFilter((function(config) {
           default:
             return $ctx.end();
         }
-    }, $__8, this);
+    }, $__11, this);
   }));
 })).addMiddleware(inputHandlerMiddleware(listDirPathHandler, 'listPathHandler')).addMiddleware(fileStatsFilter);
 var makeIndexFileFilter = indexFileFilter.privatizedConstructor();

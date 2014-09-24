@@ -1,5 +1,5 @@
 "use strict";
-var $__traceur_64_0_46_0_46_58__,
+var $__traceur_64_0_46_0_46_6__,
     $__fs__,
     $__path__,
     $__quiver_45_promise__,
@@ -7,7 +7,7 @@ var $__traceur_64_0_46_0_46_58__,
     $__quiver_45_component__,
     $__quiver_45_stream_45_util__,
     $___46__46__47_lib_47_file_45_component_46_js__;
-($__traceur_64_0_46_0_46_58__ = require("traceur"), $__traceur_64_0_46_0_46_58__ && $__traceur_64_0_46_0_46_58__.__esModule && $__traceur_64_0_46_0_46_58__ || {default: $__traceur_64_0_46_0_46_58__});
+($__traceur_64_0_46_0_46_6__ = require("traceur"), $__traceur_64_0_46_0_46_6__ && $__traceur_64_0_46_0_46_6__.__esModule && $__traceur_64_0_46_0_46_6__ || {default: $__traceur_64_0_46_0_46_6__});
 var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
 var readFileSync = fs.readFileSync;
 var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
@@ -43,7 +43,7 @@ describe('file component test', (function() {
   var expectedResults = testFiles.map((function(file) {
     return readFileSync(file).toString();
   }));
-  it('file handler test', async($traceurRuntime.initGeneratorFunction(function $__8() {
+  it('file handler test', async($traceurRuntime.initGeneratorFunction(function $__11() {
     var handler,
         args;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
@@ -70,9 +70,9 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__8, this);
+    }, $__11, this);
   })));
-  it('file handler test all', async($traceurRuntime.initGeneratorFunction(function $__9() {
+  it('file handler test all', async($traceurRuntime.initGeneratorFunction(function $__12() {
     var handler;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
@@ -87,7 +87,7 @@ describe('file component test', (function() {
           case 4:
             $ctx.state = 6;
             return Promise.all(testPaths.map((function(path, index) {
-              return handler({path: path}).then(streamableToText).should.eventually.equal(expectedResults[$traceurRuntime.toProperty(index)]);
+              return handler({path: path}).then(streamableToText).should.eventually.equal(expectedResults[index]);
             })));
           case 6:
             $ctx.maybeThrow();
@@ -96,9 +96,9 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__9, this);
+    }, $__12, this);
   })));
-  it('file cache id test', async($traceurRuntime.initGeneratorFunction(function $__10() {
+  it('file cache id test', async($traceurRuntime.initGeneratorFunction(function $__13() {
     var cacheHandler,
         path,
         file,
@@ -155,17 +155,17 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__10, this);
+    }, $__13, this);
   })));
-  it('list path handler test', async($traceurRuntime.initGeneratorFunction(function $__11() {
+  it('list path handler test', async($traceurRuntime.initGeneratorFunction(function $__14() {
     var listPathHandler,
         files,
-        $__12,
-        $__13,
-        $__14,
         $__15,
         $__16,
-        $__17;
+        $__17,
+        $__18,
+        $__19,
+        $__20;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
         switch ($ctx.state) {
@@ -177,19 +177,19 @@ describe('file component test', (function() {
             $ctx.state = 4;
             break;
           case 4:
-            $__12 = listPathHandler({path: '/'});
+            $__15 = listPathHandler({path: '/'});
             $ctx.state = 10;
             break;
           case 10:
             $ctx.state = 6;
-            return $__12;
+            return $__15;
           case 6:
-            $__13 = $ctx.sent;
+            $__16 = $ctx.sent;
             $ctx.state = 8;
             break;
           case 8:
-            $__14 = $__13.subpaths;
-            files = $__14;
+            $__17 = $__16.subpaths;
+            files = $__17;
             $ctx.state = 12;
             break;
           case 12:
@@ -200,19 +200,19 @@ describe('file component test', (function() {
             $ctx.state = 22;
             break;
           case 22:
-            $__15 = listPathHandler({path: 'subdir'});
+            $__18 = listPathHandler({path: 'subdir'});
             $ctx.state = 18;
             break;
           case 18:
             $ctx.state = 14;
-            return $__15;
+            return $__18;
           case 14:
-            $__16 = $ctx.sent;
+            $__19 = $ctx.sent;
             $ctx.state = 16;
             break;
           case 16:
-            $__17 = $__16.subpaths;
-            files = $__17;
+            $__20 = $__19.subpaths;
+            files = $__20;
             $ctx.state = 20;
             break;
           case 20:
@@ -224,9 +224,9 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__11, this);
+    }, $__14, this);
   })));
-  it('single file handler', async($traceurRuntime.initGeneratorFunction(function $__18() {
+  it('single file handler', async($traceurRuntime.initGeneratorFunction(function $__21() {
     var filePath,
         expected,
         handler;
@@ -255,9 +255,9 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__18, this);
+    }, $__21, this);
   })));
-  it('router test', async($traceurRuntime.initGeneratorFunction(function $__19() {
+  it('router test', async($traceurRuntime.initGeneratorFunction(function $__22() {
     var filePath,
         expected,
         router,
@@ -300,9 +300,9 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__19, this);
+    }, $__22, this);
   })));
-  it('index path handler test', async($traceurRuntime.initGeneratorFunction(function $__20() {
+  it('index path handler test', async($traceurRuntime.initGeneratorFunction(function $__23() {
     var privateTable,
         component,
         handler;
@@ -331,6 +331,6 @@ describe('file component test', (function() {
           default:
             return $ctx.end();
         }
-    }, $__20, this);
+    }, $__23, this);
   })));
 }));

@@ -70,11 +70,11 @@ var fileStatsToJson = (function(filePath, stats) {
   });
 });
 var fileStatsHandler = simpleHandlerBuilder((function(config) {
-  var $__8;
-  var $__7 = config,
-      dirPath = $__7.dirPath,
-      fileEvents = $__7.fileEvents,
-      cacheInterval = ($__8 = $__7.cacheInterval) === void 0 ? 300 * 1000 : $__8;
+  var $__10;
+  var $__9 = config,
+      dirPath = $__9.dirPath,
+      fileEvents = $__9.fileEvents,
+      cacheInterval = ($__10 = $__9.cacheInterval) === void 0 ? 300 * 1000 : $__10;
   var statsCache = {};
   var notFoundCache = {};
   setInterval((function() {
@@ -82,33 +82,33 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
     notFoundCache = {};
   }), cacheInterval);
   fileEvents.on('change', (function(filePath, fileStats) {
-    $traceurRuntime.setProperty(statsCache, filePath, fileStatsToJson(filePath, fileStats));
+    statsCache[filePath] = fileStatsToJson(filePath, fileStats);
   }));
   fileEvents.on('add', (function(filePath, fileStats) {
-    $traceurRuntime.setProperty(statsCache, filePath, fileStatsToJson(filePath, fileStats));
-    $traceurRuntime.setProperty(notFoundCache, filePath, false);
+    statsCache[filePath] = fileStatsToJson(filePath, fileStats);
+    notFoundCache[filePath] = false;
   }));
   fileEvents.on('unlink', (function(filePath) {
-    $traceurRuntime.setProperty(statsCache, filePath, null);
-    $traceurRuntime.setProperty(notFoundCache, filePath, true);
+    statsCache[filePath] = null;
+    notFoundCache[filePath] = true;
   }));
   return (function(args) {
-    var $__9;
-    var $__7 = args,
-        path = ($__9 = $__7.path) === void 0 ? '.' : $__9;
+    var $__12;
+    var $__11 = args,
+        path = ($__12 = $__11.path) === void 0 ? '.' : $__12;
     var filePath = joinPath(dirPath, path);
-    if (statsCache[$traceurRuntime.toProperty(filePath)])
-      return resolve(statsCache[$traceurRuntime.toProperty(filePath)]);
-    if (notFoundCache[$traceurRuntime.toProperty(filePath)])
+    if (statsCache[filePath])
+      return resolve(statsCache[filePath]);
+    if (notFoundCache[filePath])
       return reject(error(404, 'file not found'));
     return fileExists(filePath).then((function(exists) {
       if (!exists) {
-        $traceurRuntime.setProperty(notFoundCache, filePath, true);
+        notFoundCache[filePath] = true;
         return reject(error(404, 'file not found'));
       }
       return statFile(filePath).then((function(stats) {
         var fileStats = fileStatsToJson(filePath, stats);
-        $traceurRuntime.setProperty(statsCache, filePath, fileStats);
+        statsCache[filePath] = fileStats;
         return fileStats;
       }));
     }));
@@ -116,9 +116,9 @@ var fileStatsHandler = simpleHandlerBuilder((function(config) {
 }), 'void', 'json', {name: 'Quiver File Stats Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(normalizePathFilter);
 var fileStatsMiddleware = inputHandlerMiddleware(fileStatsHandler, 'getFileStats');
 var fileStatsFilter = argsBuilderFilter((function(config) {
-  var $__8 = config,
-      dirPath = $__8.dirPath,
-      getFileStats = $__8.getFileStats;
+  var $__9 = config,
+      dirPath = $__9.dirPath,
+      getFileStats = $__9.getFileStats;
   return (function(args) {
     var path = args.path;
     if (args.filePath && args.fileStats)

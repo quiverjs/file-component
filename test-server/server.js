@@ -2,7 +2,7 @@ import 'traceur'
 
 import { join as joinPath } from 'path'
 import { startServer } from 'quiver-http'
-import { makeFileBundle } from '../lib/file-component.js'
+import { fileBundle } from '../lib/file-component.js'
 
 var config = {
   dirPath: './test-content',
@@ -12,7 +12,7 @@ var config = {
 var { 
   fileHandler,
   indexFileFilter
-} = makeFileBundle()
+} = fileBundle()
 
 fileHandler.addMiddleware(indexFileFilter)
 
