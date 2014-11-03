@@ -12,8 +12,8 @@ var $__quiver_45_component__,
     $__quiver_45_promise__,
     $__quiver_45_component__,
     $__fs__,
-    $__file_45_stats_46_js__,
-    $__file_45_watch_46_js__;
+    $__file_45_stats__,
+    $__file_45_watch__;
 var simpleHandler = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}).simpleHandler;
 var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
     reject = $__1.reject,
@@ -24,8 +24,8 @@ var $__2 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45
     loadStreamHandler = $__2.loadStreamHandler;
 var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
 var readdir = fs.readdir;
-var fileStatsFilter = ($__file_45_stats_46_js__ = require("./file-stats.js"), $__file_45_stats_46_js__ && $__file_45_stats_46_js__.__esModule && $__file_45_stats_46_js__ || {default: $__file_45_stats_46_js__}).fileStatsFilter;
-var watchFileMiddleware = ($__file_45_watch_46_js__ = require("./file-watch.js"), $__file_45_watch_46_js__ && $__file_45_watch_46_js__.__esModule && $__file_45_watch_46_js__ || {default: $__file_45_watch_46_js__}).watchFileMiddleware;
+var fileStatsFilter = ($__file_45_stats__ = require("./file-stats"), $__file_45_stats__ && $__file_45_stats__.__esModule && $__file_45_stats__ || {default: $__file_45_stats__}).fileStatsFilter;
+var watchFileMiddleware = ($__file_45_watch__ = require("./file-watch"), $__file_45_watch__ && $__file_45_watch__.__esModule && $__file_45_watch__ || {default: $__file_45_watch__}).watchFileMiddleware;
 var readDirectory = promisify(readdir);
 var listDirPathHandler = simpleHandlerBuilder((function(config) {
   var $__8;

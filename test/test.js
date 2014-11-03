@@ -23,7 +23,7 @@ import {
   listDirPathHandler, 
   indexFileFilter,
   singleFileHandler,
-} from '../lib/file-component.js'
+} from '../lib/file-component'
 
 var chai = require('chai')
 var chaiAsPromised = require('chai-as-promised')

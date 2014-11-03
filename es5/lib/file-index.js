@@ -12,8 +12,8 @@ var $__quiver_45_component__,
     $__quiver_45_error__,
     $__quiver_45_promise__,
     $__path__,
-    $__file_45_stats_46_js__,
-    $__list_45_dir_46_js__;
+    $__file_45_stats__,
+    $__list_45_dir__;
 var $__0 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
     argsBuilderFilter = $__0.argsBuilderFilter,
     inputHandlerMiddleware = $__0.inputHandlerMiddleware;
@@ -21,8 +21,8 @@ var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error_
 var async = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}).async;
 var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
 var joinPath = pathLib.join;
-var fileStatsFilter = ($__file_45_stats_46_js__ = require("./file-stats.js"), $__file_45_stats_46_js__ && $__file_45_stats_46_js__.__esModule && $__file_45_stats_46_js__ || {default: $__file_45_stats_46_js__}).fileStatsFilter;
-var listDirPathHandler = ($__list_45_dir_46_js__ = require("./list-dir.js"), $__list_45_dir_46_js__ && $__list_45_dir_46_js__.__esModule && $__list_45_dir_46_js__ || {default: $__list_45_dir_46_js__}).listDirPathHandler;
+var fileStatsFilter = ($__file_45_stats__ = require("./file-stats"), $__file_45_stats__ && $__file_45_stats__.__esModule && $__file_45_stats__ || {default: $__file_45_stats__}).fileStatsFilter;
+var listDirPathHandler = ($__list_45_dir__ = require("./list-dir"), $__list_45_dir__ && $__list_45_dir__.__esModule && $__list_45_dir__ || {default: $__list_45_dir__}).listDirPathHandler;
 var defaultIndexes = ['index.html'];
 var getIndexFile = (function(indexNames, files) {
   for (var i = 0; i < indexNames.length; i++) {

@@ -1,13 +1,13 @@
 "use strict";
-var $__traceur_64_0_46_0_46_6__,
+var $__traceur_64_0_46_0_46_7__,
     $__fs__,
     $__path__,
     $__quiver_45_promise__,
     $__quiver_45_simple_45_handler__,
     $__quiver_45_component__,
     $__quiver_45_stream_45_util__,
-    $___46__46__47_lib_47_file_45_component_46_js__;
-($__traceur_64_0_46_0_46_6__ = require("traceur"), $__traceur_64_0_46_0_46_6__ && $__traceur_64_0_46_0_46_6__.__esModule && $__traceur_64_0_46_0_46_6__ || {default: $__traceur_64_0_46_0_46_6__});
+    $___46__46__47_lib_47_file_45_component__;
+($__traceur_64_0_46_0_46_7__ = require("traceur"), $__traceur_64_0_46_0_46_7__ && $__traceur_64_0_46_0_46_7__.__esModule && $__traceur_64_0_46_0_46_7__ || {default: $__traceur_64_0_46_0_46_7__});
 var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
 var readFileSync = fs.readFileSync;
 var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
@@ -23,7 +23,7 @@ var $__4 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45
 var $__5 = ($__quiver_45_stream_45_util__ = require("quiver-stream-util"), $__quiver_45_stream_45_util__ && $__quiver_45_stream_45_util__.__esModule && $__quiver_45_stream_45_util__ || {default: $__quiver_45_stream_45_util__}),
     streamableToText = $__5.streamableToText,
     emptyStreamable = $__5.emptyStreamable;
-var $__6 = ($___46__46__47_lib_47_file_45_component_46_js__ = require("../lib/file-component.js"), $___46__46__47_lib_47_file_45_component_46_js__ && $___46__46__47_lib_47_file_45_component_46_js__.__esModule && $___46__46__47_lib_47_file_45_component_46_js__ || {default: $___46__46__47_lib_47_file_45_component_46_js__}),
+var $__6 = ($___46__46__47_lib_47_file_45_component__ = require("../lib/file-component"), $___46__46__47_lib_47_file_45_component__ && $___46__46__47_lib_47_file_45_component__.__esModule && $___46__46__47_lib_47_file_45_component__ || {default: $___46__46__47_lib_47_file_45_component__}),
     fileHandler = $__6.fileHandler,
     fileCacheHandler = $__6.fileCacheHandler,
     listDirPathHandler = $__6.listDirPathHandler,

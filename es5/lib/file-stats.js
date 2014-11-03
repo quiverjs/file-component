@@ -22,8 +22,8 @@ var $__quiver_45_error__,
     $__fs__,
     $__path__,
     $__quiver_45_component__,
-    $__file_45_watch_46_js__,
-    $__normalize_46_js__;
+    $__file_45_watch__,
+    $__normalize__;
 var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
 var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
     resolve = $__1.resolve,
@@ -40,8 +40,8 @@ var $__4 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45
     argsBuilderFilter = $__4.argsBuilderFilter,
     simpleHandlerBuilder = $__4.simpleHandlerBuilder,
     inputHandlerMiddleware = $__4.inputHandlerMiddleware;
-var watchFileMiddleware = ($__file_45_watch_46_js__ = require("./file-watch.js"), $__file_45_watch_46_js__ && $__file_45_watch_46_js__.__esModule && $__file_45_watch_46_js__ || {default: $__file_45_watch_46_js__}).watchFileMiddleware;
-var normalizePathFilter = ($__normalize_46_js__ = require("./normalize.js"), $__normalize_46_js__ && $__normalize_46_js__.__esModule && $__normalize_46_js__ || {default: $__normalize_46_js__}).normalizePathFilter;
+var watchFileMiddleware = ($__file_45_watch__ = require("./file-watch"), $__file_45_watch__ && $__file_45_watch__.__esModule && $__file_45_watch__ || {default: $__file_45_watch__}).watchFileMiddleware;
+var normalizePathFilter = ($__normalize__ = require("./normalize"), $__normalize__ && $__normalize__.__esModule && $__normalize__ || {default: $__normalize__}).normalizePathFilter;
 var statFile = promisify(stat);
 var fileExists = (function(filePath) {
   return createPromise((function(resolve) {
