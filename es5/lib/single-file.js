@@ -38,5 +38,5 @@ var singleFileMiddleware = configMiddleware((function(config) {
     return config;
   }));
 }), {name: 'Quiver Single File Middleware'});
-var singleFileHandler = makeFileHandler().addMiddleware(singleFilePathFilter).addMiddleware(singleFileMiddleware);
-var makeSingleFileHandler = singleFileHandler.privatizedConstructor();
+var singleFileHandler = makeFileHandler().middleware(singleFilePathFilter).middleware(singleFileMiddleware);
+var makeSingleFileHandler = singleFileHandler.factory();

@@ -14,7 +14,7 @@ var config = {
 var $__3 = fileBundle(),
     fileHandler = $__3.fileHandler,
     indexFileFilter = $__3.indexFileFilter;
-fileHandler.addMiddleware(indexFileFilter);
+fileHandler.middleware(indexFileFilter);
 startServer(fileHandler, config).then((function(server) {
   console.log('simple file server running at port 8080...');
 })).catch((function(err) {

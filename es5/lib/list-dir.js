@@ -57,5 +57,5 @@ var listDirPathHandler = simpleHandlerBuilder((function(config) {
       return {subpaths: subpaths};
     }));
   });
-}), 'void', 'json', {name: 'Quiver List Directory Path Handler'}).addMiddleware(watchFileMiddleware).addMiddleware(fileStatsFilter);
-var makeListDirPathHandler = listDirPathHandler.privatizedConstructor();
+}), 'void', 'json', {name: 'Quiver List Directory Path Handler'}).middleware(watchFileMiddleware).middleware(fileStatsFilter);
+var makeListDirPathHandler = listDirPathHandler.factory();

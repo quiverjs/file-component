@@ -31,5 +31,5 @@ var fileHandler = simpleHandlerBuilder((function(config) {
       return reject(error(404, 'path is not a file'));
     return fileStreamable(filePath, fileStats);
   });
-}), 'void', 'streamable', {name: 'Quiver File Stream Handler'}).addMiddleware(contentTypeFilter).addMiddleware(fileStatsFilter);
-var makeFileHandler = fileHandler.privatizedConstructor();
+}), 'void', 'streamable', {name: 'Quiver File Stream Handler'}).middleware(contentTypeFilter).middleware(fileStatsFilter);
+var makeFileHandler = fileHandler.factory();

@@ -35,7 +35,7 @@ chai.use(chaiAsPromised);
 var should = chai.should();
 var touch = promisify(require('touch'));
 describe('file component test', (function() {
-  var dirPath = './test-content/';
+  var dirPath = process.cwd() + '/test-content';
   var testPaths = ['00.txt', '01.txt', 'subdir/02.txt', 'subdir/index.html'];
   var testFiles = testPaths.map((function(file) {
     return joinPath(dirPath, file);
@@ -269,7 +269,7 @@ describe('file component test', (function() {
           case 0:
             filePath = testFiles[1];
             expected = expectedResults[1];
-            router = createRouter().addStaticRoute(singleFileHandler(), '/static-file').addParamRoute(fileHandler(), '/api/:restpath');
+            router = createRouter().staticRoute('/static-file', singleFileHandler()).paramRoute('/api/:restpath', fileHandler());
             config = {
               filePath: filePath,
               dirPath: dirPath

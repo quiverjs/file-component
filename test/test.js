@@ -34,7 +34,7 @@ var should = chai.should()
 var touch = promisify(require('touch'))
 
 describe('file component test', () => {
-  var dirPath = './test-content/'
+  var dirPath = process.cwd() + '/test-content'
 
   var testPaths = [
     '00.txt',
@@ -127,8 +127,8 @@ describe('file component test', () => {
     var expected = expectedResults[1]
 
     var router = createRouter()
-      .addStaticRoute(singleFileHandler(), '/static-file')
-      .addParamRoute(fileHandler(), '/api/:restpath')
+      .staticRoute('/static-file', singleFileHandler())
+      .paramRoute('/api/:restpath', fileHandler())
 
     var config = { filePath, dirPath }
     

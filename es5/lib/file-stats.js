@@ -129,6 +129,6 @@ var fileStatsFilter = argsBuilderFilter((function(config) {
       return args;
     }));
   });
-}), {name: 'Quiver File Stats Filter'}).addMiddleware(fileStatsMiddleware);
-var makeFileStatsHandler = fileStatsHandler.privatizedConstructor();
-var makeFileStatsFilter = fileStatsFilter.privatizedConstructor();
+}), {name: 'Quiver File Stats Filter'}).middleware(fileStatsMiddleware);
+var makeFileStatsHandler = fileStatsHandler.factory();
+var makeFileStatsFilter = fileStatsFilter.factory();

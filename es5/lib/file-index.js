@@ -96,5 +96,5 @@ var indexFileFilter = argsBuilderFilter((function(config) {
         }
     }, $__11, this);
   }));
-})).addMiddleware(inputHandlerMiddleware(listDirPathHandler, 'listPathHandler')).addMiddleware(fileStatsFilter);
-var makeIndexFileFilter = indexFileFilter.privatizedConstructor();
+})).middleware(inputHandlerMiddleware(listDirPathHandler, 'listPathHandler')).middleware(fileStatsFilter);
+var makeIndexFileFilter = indexFileFilter.factory();

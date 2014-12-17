@@ -14,7 +14,7 @@ var {
   indexFileFilter
 } = fileBundle()
 
-fileHandler.addMiddleware(indexFileFilter)
+fileHandler.middleware(indexFileFilter)
 
 startServer(fileHandler, config)
 .then(server => {

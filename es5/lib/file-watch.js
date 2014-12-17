@@ -21,4 +21,4 @@ var watchFileMiddleware = configMiddleware((function(config) {
   name: 'Quiver Watch File Middleware',
   repeat: 'once'
 });
-var makeWatchFileMiddleware = watchFileMiddleware.privatizedConstructor();
+var makeWatchFileMiddleware = watchFileMiddleware.factory();

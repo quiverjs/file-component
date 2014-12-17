@@ -16,12 +16,12 @@ var makeFileCacheHandler = ($__file_45_cache__ = require("./file-cache"), $__fil
 var makeListDirPathHandler = ($__list_45_dir__ = require("./list-dir"), $__list_45_dir__ && $__list_45_dir__.__esModule && $__list_45_dir__ || {default: $__list_45_dir__}).makeListDirPathHandler;
 var makeIndexFileFilter = ($__file_45_index__ = require("./file-index"), $__file_45_index__ && $__file_45_index__.__esModule && $__file_45_index__ || {default: $__file_45_index__}).makeIndexFileFilter;
 var makeFileBundle = (function() {
-  var privateTable = arguments[0] !== (void 0) ? arguments[0] : {};
+  var forkTable = arguments[0] !== (void 0) ? arguments[0] : {};
   return ({
-    fileHandler: makeFileHandler(privateTable),
-    fileStatsHandler: makeFileStatsHandler(privateTable),
-    fileCacheHandler: makeFileCacheHandler(privateTable),
-    listDirPathHandler: makeListDirPathHandler(privateTable),
-    indexFileFilter: makeIndexFileFilter(privateTable)
+    fileHandler: makeFileHandler(forkTable),
+    fileStatsHandler: makeFileStatsHandler(forkTable),
+    fileCacheHandler: makeFileCacheHandler(forkTable),
+    listDirPathHandler: makeListDirPathHandler(forkTable),
+    indexFileFilter: makeIndexFileFilter(forkTable)
   });
 });

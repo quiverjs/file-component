@@ -30,5 +30,5 @@ var fileCacheHandler = simpleHandler((function(args) {
     cacheId: cacheId,
     lastModified: lastModified
   };
-}), 'void', 'json').addMiddleware(fileStatsFilter);
-var makeFileCacheHandler = fileCacheHandler.privatizedConstructor();
+}), 'void', 'json').middleware(fileStatsFilter);
+var makeFileCacheHandler = fileCacheHandler.factory();
