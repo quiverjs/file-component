@@ -8,16 +8,16 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var $__quiver_45_error__,
-    $__quiver_45_promise__,
-    $__quiver_45_component__,
+var $__quiver_45_core_47_error__,
+    $__quiver_45_core_47_promise__,
+    $__quiver_45_core_47_component__,
     $__file_45_handler__,
     $__fs__;
-var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
-var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+var error = ($__quiver_45_core_47_error__ = require("quiver-core/error"), $__quiver_45_core_47_error__ && $__quiver_45_core_47_error__.__esModule && $__quiver_45_core_47_error__ || {default: $__quiver_45_core_47_error__}).error;
+var $__1 = ($__quiver_45_core_47_promise__ = require("quiver-core/promise"), $__quiver_45_core_47_promise__ && $__quiver_45_core_47_promise__.__esModule && $__quiver_45_core_47_promise__ || {default: $__quiver_45_core_47_promise__}),
     promisify = $__1.promisify,
     reject = $__1.reject;
-var $__2 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+var $__2 = ($__quiver_45_core_47_component__ = require("quiver-core/component"), $__quiver_45_core_47_component__ && $__quiver_45_core_47_component__.__esModule && $__quiver_45_core_47_component__ || {default: $__quiver_45_core_47_component__}),
     argsFilter = $__2.argsFilter,
     configMiddleware = $__2.configMiddleware,
     extendHandler = $__2.extendHandler;

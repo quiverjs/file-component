@@ -1,26 +1,26 @@
 "use strict";
-var $__traceur_64_0_46_0_46_7__,
+var $__quiver_45_core_47_traceur__,
     $__fs__,
     $__path__,
-    $__quiver_45_promise__,
-    $__quiver_45_simple_45_handler__,
-    $__quiver_45_component__,
-    $__quiver_45_stream_45_util__,
+    $__quiver_45_core_47_promise__,
+    $__quiver_45_core_47_simple_45_handler__,
+    $__quiver_45_core_47_component__,
+    $__quiver_45_core_47_stream_45_util__,
     $___46__46__47_lib_47_file_45_component__;
-($__traceur_64_0_46_0_46_7__ = require("traceur"), $__traceur_64_0_46_0_46_7__ && $__traceur_64_0_46_0_46_7__.__esModule && $__traceur_64_0_46_0_46_7__ || {default: $__traceur_64_0_46_0_46_7__});
+($__quiver_45_core_47_traceur__ = require("quiver-core/traceur"), $__quiver_45_core_47_traceur__ && $__quiver_45_core_47_traceur__.__esModule && $__quiver_45_core_47_traceur__ || {default: $__quiver_45_core_47_traceur__});
 var fs = ($__fs__ = require("fs"), $__fs__ && $__fs__.__esModule && $__fs__ || {default: $__fs__}).default;
 var readFileSync = fs.readFileSync;
 var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
 var joinPath = pathLib.join;
-var $__2 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+var $__2 = ($__quiver_45_core_47_promise__ = require("quiver-core/promise"), $__quiver_45_core_47_promise__ && $__quiver_45_core_47_promise__.__esModule && $__quiver_45_core_47_promise__ || {default: $__quiver_45_core_47_promise__}),
     async = $__2.async,
     promisify = $__2.promisify,
     timeout = $__2.timeout;
-var streamToSimpleHandler = ($__quiver_45_simple_45_handler__ = require("quiver-simple-handler"), $__quiver_45_simple_45_handler__ && $__quiver_45_simple_45_handler__.__esModule && $__quiver_45_simple_45_handler__ || {default: $__quiver_45_simple_45_handler__}).streamToSimpleHandler;
-var $__4 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+var streamToSimpleHandler = ($__quiver_45_core_47_simple_45_handler__ = require("quiver-core/simple-handler"), $__quiver_45_core_47_simple_45_handler__ && $__quiver_45_core_47_simple_45_handler__.__esModule && $__quiver_45_core_47_simple_45_handler__ || {default: $__quiver_45_core_47_simple_45_handler__}).streamToSimpleHandler;
+var $__4 = ($__quiver_45_core_47_component__ = require("quiver-core/component"), $__quiver_45_core_47_component__ && $__quiver_45_core_47_component__.__esModule && $__quiver_45_core_47_component__ || {default: $__quiver_45_core_47_component__}),
     loadSimpleHandler = $__4.loadSimpleHandler,
     createRouter = $__4.router;
-var $__5 = ($__quiver_45_stream_45_util__ = require("quiver-stream-util"), $__quiver_45_stream_45_util__ && $__quiver_45_stream_45_util__.__esModule && $__quiver_45_stream_45_util__ || {default: $__quiver_45_stream_45_util__}),
+var $__5 = ($__quiver_45_core_47_stream_45_util__ = require("quiver-core/stream-util"), $__quiver_45_core_47_stream_45_util__ && $__quiver_45_core_47_stream_45_util__.__esModule && $__quiver_45_core_47_stream_45_util__ || {default: $__quiver_45_core_47_stream_45_util__}),
     streamableToText = $__5.streamableToText,
     emptyStreamable = $__5.emptyStreamable;
 var $__6 = ($___46__46__47_lib_47_file_45_component__ = require("../lib/file-component"), $___46__46__47_lib_47_file_45_component__ && $___46__46__47_lib_47_file_45_component__.__esModule && $___46__46__47_lib_47_file_45_component__ || {default: $___46__46__47_lib_47_file_45_component__}),

@@ -17,15 +17,15 @@ Object.defineProperties(exports, {
     }},
   __esModule: {value: true}
 });
-var $__quiver_45_error__,
-    $__quiver_45_promise__,
+var $__quiver_45_core_47_error__,
+    $__quiver_45_core_47_promise__,
     $__fs__,
     $__path__,
-    $__quiver_45_component__,
+    $__quiver_45_core_47_component__,
     $__file_45_watch__,
     $__normalize__;
-var error = ($__quiver_45_error__ = require("quiver-error"), $__quiver_45_error__ && $__quiver_45_error__.__esModule && $__quiver_45_error__ || {default: $__quiver_45_error__}).error;
-var $__1 = ($__quiver_45_promise__ = require("quiver-promise"), $__quiver_45_promise__ && $__quiver_45_promise__.__esModule && $__quiver_45_promise__ || {default: $__quiver_45_promise__}),
+var error = ($__quiver_45_core_47_error__ = require("quiver-core/error"), $__quiver_45_core_47_error__ && $__quiver_45_core_47_error__.__esModule && $__quiver_45_core_47_error__ || {default: $__quiver_45_core_47_error__}).error;
+var $__1 = ($__quiver_45_core_47_promise__ = require("quiver-core/promise"), $__quiver_45_core_47_promise__ && $__quiver_45_core_47_promise__.__esModule && $__quiver_45_core_47_promise__ || {default: $__quiver_45_core_47_promise__}),
     resolve = $__1.resolve,
     reject = $__1.reject,
     promisify = $__1.promisify,
@@ -36,7 +36,7 @@ var $__7 = fs,
     stat = $__7.stat;
 var pathLib = ($__path__ = require("path"), $__path__ && $__path__.__esModule && $__path__ || {default: $__path__}).default;
 var joinPath = pathLib.join;
-var $__4 = ($__quiver_45_component__ = require("quiver-component"), $__quiver_45_component__ && $__quiver_45_component__.__esModule && $__quiver_45_component__ || {default: $__quiver_45_component__}),
+var $__4 = ($__quiver_45_core_47_component__ = require("quiver-core/component"), $__quiver_45_core_47_component__ && $__quiver_45_core_47_component__.__esModule && $__quiver_45_core_47_component__ || {default: $__quiver_45_core_47_component__}),
     argsBuilderFilter = $__4.argsBuilderFilter,
     simpleHandlerBuilder = $__4.simpleHandlerBuilder,
     inputHandlerMiddleware = $__4.inputHandlerMiddleware;

@@ -1,4 +1,4 @@
-import 'traceur'
+import 'quiver-core/traceur'
 
 import fs from 'fs'
 var { readFileSync } = fs
@@ -6,17 +6,17 @@ var { readFileSync } = fs
 import pathLib from 'path'
 var { join: joinPath } = pathLib
 
-import { async, promisify, timeout } from 'quiver-promise'
-import { streamToSimpleHandler } from 'quiver-simple-handler'
+import { async, promisify, timeout } from 'quiver-core/promise'
+import { streamToSimpleHandler } from 'quiver-core/simple-handler'
 
 import { 
   loadSimpleHandler,
   router as createRouter
-} from 'quiver-component'
+} from 'quiver-core/component'
 
 import { 
   streamableToText, emptyStreamable 
-} from 'quiver-stream-util'
+} from 'quiver-core/stream-util'
 
 import { 
   fileHandler, fileCacheHandler, 
