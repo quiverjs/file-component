@@ -6,7 +6,7 @@
   },
   "name": "quiver-file-component",
   "desription": "Create various filesystem-related stream handlers and filters",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "homepage": "https://github.com/quiverjs/quiver-file-component",
   "repository": {
     "url": "git@github.com:quiverjs/quiver-file-component.git"
