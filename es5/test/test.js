@@ -18,7 +18,7 @@ var $__2 = ($__quiver_45_core_47_promise__ = require("quiver-core/promise"), $__
     timeout = $__2.timeout;
 var streamToSimpleHandler = ($__quiver_45_core_47_simple_45_handler__ = require("quiver-core/simple-handler"), $__quiver_45_core_47_simple_45_handler__ && $__quiver_45_core_47_simple_45_handler__.__esModule && $__quiver_45_core_47_simple_45_handler__ || {default: $__quiver_45_core_47_simple_45_handler__}).streamToSimpleHandler;
 var $__4 = ($__quiver_45_core_47_component__ = require("quiver-core/component"), $__quiver_45_core_47_component__ && $__quiver_45_core_47_component__.__esModule && $__quiver_45_core_47_component__ || {default: $__quiver_45_core_47_component__}),
-    loadSimpleHandler = $__4.loadSimpleHandler,
+    simpleHandlerLoader = $__4.simpleHandlerLoader,
     createRouter = $__4.router;
 var $__5 = ($__quiver_45_core_47_stream_45_util__ = require("quiver-core/stream-util"), $__quiver_45_core_47_stream_45_util__ && $__quiver_45_core_47_stream_45_util__.__esModule && $__quiver_45_core_47_stream_45_util__ || {default: $__quiver_45_core_47_stream_45_util__}),
     streamableToText = $__5.streamableToText,
@@ -44,23 +44,28 @@ describe('file component test', (function() {
     return readFileSync(file).toString();
   }));
   it('file handler test', async($traceurRuntime.initGeneratorFunction(function $__11() {
-    var handler,
+    var component,
+        handler,
         args;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
         switch ($ctx.state) {
           case 0:
+            component = fileHandler().setLoader(simpleHandlerLoader('void', 'text'));
+            $ctx.state = 10;
+            break;
+          case 10:
             $ctx.state = 2;
-            return loadSimpleHandler({dirPath: dirPath}, fileHandler(), 'void', 'text');
+            return component.loadHandler({dirPath: dirPath});
           case 2:
             handler = $ctx.sent;
             $ctx.state = 4;
             break;
           case 4:
             args = {path: testPaths[0]};
-            $ctx.state = 10;
+            $ctx.state = 12;
             break;
-          case 10:
+          case 12:
             $ctx.state = 6;
             return handler(args).should.eventually.equal(expectedResults[0]);
           case 6:
@@ -229,6 +234,7 @@ describe('file component test', (function() {
   it('single file handler', async($traceurRuntime.initGeneratorFunction(function $__21() {
     var filePath,
         expected,
+        component,
         handler;
     return $traceurRuntime.createGeneratorInstance(function($ctx) {
       while (true)
@@ -236,11 +242,12 @@ describe('file component test', (function() {
           case 0:
             filePath = testFiles[1];
             expected = expectedResults[1];
+            component = singleFileHandler().setLoader(simpleHandlerLoader('void', 'text'));
             $ctx.state = 10;
             break;
           case 10:
             $ctx.state = 2;
-            return loadSimpleHandler({filePath: filePath}, singleFileHandler(), 'void', 'text');
+            return component.loadHandler({filePath: filePath});
           case 2:
             handler = $ctx.sent;
             $ctx.state = 4;
@@ -269,7 +276,7 @@ describe('file component test', (function() {
           case 0:
             filePath = testFiles[1];
             expected = expectedResults[1];
-            router = createRouter().staticRoute('/static-file', singleFileHandler()).paramRoute('/api/:restpath', fileHandler());
+            router = createRouter().staticRoute('/static-file', singleFileHandler()).paramRoute('/api/:restpath', fileHandler()).setLoader(simpleHandlerLoader('void', 'text'));
             config = {
               filePath: filePath,
               dirPath: dirPath
@@ -278,7 +285,7 @@ describe('file component test', (function() {
             break;
           case 14:
             $ctx.state = 2;
-            return loadSimpleHandler(config, router, 'void', 'text');
+            return router.loadHandler(config);
           case 2:
             handler = $ctx.sent;
             $ctx.state = 4;
@@ -311,12 +318,12 @@ describe('file component test', (function() {
         switch ($ctx.state) {
           case 0:
             privateTable = {};
-            component = fileHandler(privateTable).addMiddleware(indexFileFilter(privateTable));
+            component = fileHandler(privateTable).middleware(indexFileFilter(privateTable)).setLoader(simpleHandlerLoader('void', 'text'));
             $ctx.state = 10;
             break;
           case 10:
             $ctx.state = 2;
-            return loadSimpleHandler({dirPath: dirPath}, component, 'void', 'text');
+            return component.loadHandler({dirPath: dirPath});
           case 2:
             handler = $ctx.sent;
             $ctx.state = 4;

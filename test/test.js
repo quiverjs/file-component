@@ -10,7 +10,7 @@ import { async, promisify, timeout } from 'quiver-core/promise'
 import { streamToSimpleHandler } from 'quiver-core/simple-handler'
 
 import { 
-  loadSimpleHandler,
+  simpleHandlerLoader,
   router as createRouter
 } from 'quiver-core/component'
 
@@ -50,8 +50,10 @@ describe('file component test', () => {
     file => readFileSync(file).toString())
 
   it('file handler test', async(function*() {
-    var handler = yield loadSimpleHandler(
-      {dirPath}, fileHandler(), 'void', 'text')
+    var component = fileHandler()
+      .setLoader(simpleHandlerLoader('void', 'text'))
+
+    var handler = yield component.loadHandler({dirPath})
 
     var args = { path: testPaths[0] }
 
@@ -114,9 +116,10 @@ describe('file component test', () => {
     var filePath = testFiles[1]
     var expected = expectedResults[1]
 
-    var handler = yield loadSimpleHandler(
-      {filePath}, singleFileHandler(), 
-      'void', 'text')
+    var component = singleFileHandler()
+      .setLoader(simpleHandlerLoader('void', 'text'))
+
+    var handler = yield component.loadHandler({filePath})
 
     yield handler({path:'/random'})
       .should.eventually.equal(expected)
@@ -129,11 +132,11 @@ describe('file component test', () => {
     var router = createRouter()
       .staticRoute('/static-file', singleFileHandler())
       .paramRoute('/api/:restpath', fileHandler())
+      .setLoader(simpleHandlerLoader('void', 'text'))
 
     var config = { filePath, dirPath }
     
-    var handler = yield loadSimpleHandler(
-      config, router, 'void', 'text')
+    var handler = yield router.loadHandler(config)
 
     yield handler({path: '/static-file'})
       .should.eventually.equal(expected)
@@ -146,10 +149,10 @@ describe('file component test', () => {
     var privateTable = { }
 
     var component = fileHandler(privateTable)
-      .addMiddleware(indexFileFilter(privateTable))
+      .middleware(indexFileFilter(privateTable))
+      .setLoader(simpleHandlerLoader('void', 'text'))
 
-    var handler = yield loadSimpleHandler(
-      {dirPath}, component, 'void', 'text')
+    var handler = yield component.loadHandler({dirPath})
     
     yield handler({path: '/subdir'})
       .should.eventually.equal(expectedResults[3])
