@@ -3,22 +3,22 @@ import {
 } from 'quiver-core/component'
 
 import crypto from 'crypto'
-var { createHash } = crypto
+let { createHash } = crypto
 
 import { fileStatsFilter } from './file-stats'
 
-var hash = string => {
-  var checksum = createHash('md5')
+let hash = string => {
+  let checksum = createHash('md5')
   checksum.update(string)
   return checksum.digest('hex')
 }
 
-export var fileCacheHandler = simpleHandler(
+export let fileCacheHandler = simpleHandler(
 args => {
-  var { filePath, fileStats } = args
+  let { filePath, fileStats } = args
 
-  var cacheId = hash(filePath)
-  var lastModified = fileStats.mtime
+  let cacheId = hash(filePath)
+  let lastModified = fileStats.mtime
 
   return {
     cacheId, lastModified
@@ -27,5 +27,5 @@ args => {
 }, 'void', 'json')
 .middleware(fileStatsFilter)
 
-export var makeFileCacheHandler = 
+export let makeFileCacheHandler = 
   fileCacheHandler.factory()

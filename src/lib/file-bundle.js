@@ -4,7 +4,7 @@ import { makeFileCacheHandler } from './file-cache'
 import { makeListDirPathHandler } from './list-dir'
 import { makeIndexFileFilter } from './file-index'
 
-export var makeFileBundle = (forkTable={}) => ({
+export let makeFileBundle = (forkTable={}) => ({
   fileHandler: makeFileHandler(forkTable),
   fileStatsHandler: makeFileStatsHandler(forkTable),
   fileCacheHandler: makeFileCacheHandler(forkTable),

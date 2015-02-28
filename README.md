@@ -5,4 +5,4 @@ quiver-file-component
 
 Create various filesystem-related stream handlers and filters
 
-[Documentation](https://github.com/quiverjs/doc/wiki/File-Component)
+[Documentation](https://github.com/quiverjs/quiverjs/wiki/File-Component)

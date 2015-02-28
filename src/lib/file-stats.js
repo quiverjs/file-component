@@ -5,10 +5,10 @@ import {
 } from 'quiver-core/promise'
 
 import fs from 'fs'
-var { exists, stat } = fs
+let { exists, stat } = fs
 
 import pathLib from 'path'
-var { join: joinPath } = pathLib
+let { join: joinPath } = pathLib
 
 import { 
   argsBuilderFilter,
@@ -19,12 +19,12 @@ import {
 import { watchFileMiddleware } from './file-watch'
 import { normalizePathFilter } from './normalize'
 
-var statFile = promisify(stat)
-var fileExists = filePath =>
+let statFile = promisify(stat)
+let fileExists = filePath =>
   createPromise(resolve =>
     exists(filePath, resolve))
 
-var fileStatsToJson = (filePath, stats) => ({
+let fileStatsToJson = (filePath, stats) => ({
   filePath: filePath,
   isFile: stats.isFile(),
   isDirectory: stats.isDirectory(),
@@ -44,12 +44,12 @@ var fileStatsToJson = (filePath, stats) => ({
   ctime: stats.ctime.getTime()
 })
 
-export var fileStatsHandler = simpleHandlerBuilder(
+export let fileStatsHandler = simpleHandlerBuilder(
 config => {
-  var { dirPath, fileEvents, cacheInterval=300*1000 } = config
+  let { dirPath, fileEvents, cacheInterval=300*1000 } = config
 
-  var statsCache = { }
-  var notFoundCache = { }
+  let statsCache = { }
+  let notFoundCache = { }
 
   setInterval(() => {
     statsCache = { }
@@ -71,8 +71,8 @@ config => {
   })
 
   return args => {
-    var { path='.' } = args
-    var filePath = joinPath(dirPath, path)
+    let { path='.' } = args
+    let filePath = joinPath(dirPath, path)
 
     if(statsCache[filePath]) 
       return resolve(statsCache[filePath])
@@ -87,7 +87,7 @@ config => {
       }
 
       return statFile(filePath).then(stats => {
-        var fileStats = fileStatsToJson(filePath, stats)
+        let fileStats = fileStatsToJson(filePath, stats)
 
         statsCache[filePath] = fileStats
 
@@ -102,15 +102,15 @@ config => {
 .addMiddleware(watchFileMiddleware)
 .addMiddleware(normalizePathFilter)
 
-export var fileStatsMiddleware = inputHandlerMiddleware(
+export let fileStatsMiddleware = inputHandlerMiddleware(
   fileStatsHandler, 'getFileStats')
 
-export var fileStatsFilter = argsBuilderFilter(
+export let fileStatsFilter = argsBuilderFilter(
 config => {
-  var { dirPath, getFileStats } = config
+  let { dirPath, getFileStats } = config
 
   return args => {
-    var { path } = args
+    let { path } = args
 
     if(args.filePath && args.fileStats) return args
 
@@ -126,8 +126,8 @@ config => {
 })
 .middleware(fileStatsMiddleware)
 
-export var makeFileStatsHandler = 
+export let makeFileStatsHandler = 
   fileStatsHandler.factory()
 
-export var makeFileStatsFilter = 
+export let makeFileStatsFilter = 
   fileStatsFilter.factory()

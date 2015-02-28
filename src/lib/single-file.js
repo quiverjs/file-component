@@ -7,11 +7,11 @@ import {
 import { makeFileHandler } from './file-handler'
 
 import fs from 'fs'
-var { stat } = fs
+let { stat } = fs
 
-var statFile = promisify(stat)
+let statFile = promisify(stat)
 
-var singleFilePathFilter = argsFilter(
+let singleFilePathFilter = argsFilter(
 args => {
   args.path = '.'
   return args
@@ -19,9 +19,9 @@ args => {
   name: 'Quiver Single File Path Filter'
 })
 
-var singleFileMiddleware = configMiddleware(
+let singleFileMiddleware = configMiddleware(
 config => {
-  var filePath = config.filePath
+  let filePath = config.filePath
 
   return statFile(filePath).then(fileStats => {
     if(!fileStats.isFile()) return reject(
@@ -34,9 +34,9 @@ config => {
   name: 'Quiver Single File Middleware'
 })
 
-export var singleFileHandler = makeFileHandler()
+export let singleFileHandler = makeFileHandler()
   .middleware(singleFilePathFilter)
   .middleware(singleFileMiddleware)
 
-export var makeSingleFileHandler = 
+export let makeSingleFileHandler = 
   singleFileHandler.factory()

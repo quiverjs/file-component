@@ -6,24 +6,24 @@ import {
 } from 'quiver-core/component'
 
 import fs from 'fs'
-var { readdir } = fs
+let { readdir } = fs
 
 import { fileStatsFilter } from './file-stats'
 import { watchFileMiddleware } from './file-watch'
 
-var readDirectory = promisify(readdir)
+let readDirectory = promisify(readdir)
 
-export var listDirPathHandler = simpleHandlerBuilder(
+export let listDirPathHandler = simpleHandlerBuilder(
 config => {
-  var { fileEvents, cacheInterval=300*1000 } = config
+  let { fileEvents, cacheInterval=300*1000 } = config
 
-  var dirCache = { }
+  let dirCache = { }
 
   setInterval(() => {
     dirCache = { }
   },  cacheInterval)
 
-  var removeCache = (filePath, fileStats) => {
+  let removeCache = (filePath, fileStats) => {
     if(fileStats.isDirectory())
       dirCache[filePath] = null
   }
@@ -33,12 +33,12 @@ config => {
   fileEvents.on('unlinkDir', removeCache)
 
   return args => {
-    var { filePath, fileStats } = args
+    let { filePath, fileStats } = args
 
     if(!fileStats.isDirectory)
       return reject(error(404, 'path is not a directory'))
 
-    var subpaths = dirCache[filePath]
+    let subpaths = dirCache[filePath]
     if(subpaths) return resolve({subpaths})
 
     return readDirectory(filePath).then(subpaths => {
@@ -52,5 +52,5 @@ config => {
 .middleware(watchFileMiddleware)
 .middleware(fileStatsFilter)
 
-export var makeListDirPathHandler = 
+export let makeListDirPathHandler = 
   listDirPathHandler.factory()

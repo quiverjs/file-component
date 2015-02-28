@@ -1,15 +1,15 @@
 import { argsFilter } from 'quiver-core/component'
 
 import pathLib from 'path'
-var { normalize } = pathLib
+let { normalize } = pathLib
 
-var normalized = Symbol('pathNormalized')
+let normalized = Symbol('pathNormalized')
 
-export var normalizePathFilter = argsFilter(
+export let normalizePathFilter = argsFilter(
 args => {
   if(args[normalized]) return args
 
-  var { path='/' } = args
+  let { path='/' } = args
 
   args[normalized] = true
   args.path = normalize(path)
