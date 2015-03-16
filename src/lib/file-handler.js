@@ -8,10 +8,10 @@ import {
 import { contentTypeFilter } from './mime-filter'
 import { fileStatsFilter } from './file-stats'
 
-export let fileHandler = simpleHandlerBuilder(
+export const fileHandler = simpleHandlerBuilder(
 config => {
   return args => {
-    let { fileStats, filePath } = args
+    const { fileStats, filePath } = args
 
     if(!fileStats.isFile)
       return reject(error(404, 'path is not a file'))
@@ -24,4 +24,4 @@ config => {
 .middleware(contentTypeFilter)
 .middleware(fileStatsFilter)
 
-export let makeFileHandler = fileHandler.factory()
+export const makeFileHandler = fileHandler.factory()

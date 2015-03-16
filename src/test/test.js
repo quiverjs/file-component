@@ -1,8 +1,8 @@
 import fs from 'fs'
-let { readFileSync } = fs
+const { readFileSync } = fs
 
 import pathLib from 'path'
-let { join: joinPath } = pathLib
+const { join: joinPath } = pathLib
 
 import { async, promisify, timeout } from 'quiver-core/promise'
 import { streamToSimpleHandler } from 'quiver-core/simple-handler'
@@ -23,44 +23,44 @@ import {
   singleFileHandler,
 } from '../lib/file-component'
 
-let chai = require('chai')
-let chaiAsPromised = require('chai-as-promised')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
 
 chai.use(chaiAsPromised)
-let should = chai.should()
+const should = chai.should()
 
-let touch = promisify(require('touch'))
+const touch = promisify(require('touch'))
 
 describe('file component test', () => {
-  let dirPath = process.cwd() + '/test-content'
+  const dirPath = process.cwd() + '/test-content'
 
-  let testPaths = [
+  const testPaths = [
     '00.txt',
     '01.txt',
     'subdir/02.txt',
     'subdir/index.html',
   ]
 
-  let testFiles = testPaths.map(file => 
+  const testFiles = testPaths.map(file => 
     joinPath(dirPath, file))
 
-  let expectedResults = testFiles.map(
+  const expectedResults = testFiles.map(
     file => readFileSync(file).toString())
 
   it('file handler test', async(function*() {
-    let component = fileHandler()
+    const component = fileHandler()
       .setLoader(simpleHandlerLoader('void', 'text'))
 
-    let handler = yield component.loadHandler({dirPath})
+    const handler = yield component.loadHandler({dirPath})
 
-    let args = { path: testPaths[0] }
+    const args = { path: testPaths[0] }
 
     yield handler(args).should.eventually.equal(
       expectedResults[0])
   }))
 
   it('file handler test all', async(function*() {
-    let handler = yield fileHandler().loadHandler({dirPath})
+    const handler = yield fileHandler().loadHandler({dirPath})
 
     yield Promise.all(testPaths.map(
       (path, index) =>
@@ -71,18 +71,18 @@ describe('file component test', () => {
   }))
 
   it('file cache id test', async(function*() {
-    let cacheHandler = yield fileCacheHandler()
+    const cacheHandler = yield fileCacheHandler()
       .loadHandler({dirPath})
 
-    let path = testPaths[1]
-    let file = testFiles[1]
+    const path = testPaths[1]
+    const file = testFiles[1]
 
-    let result1 = yield cacheHandler({ path })
+    const result1 = yield cacheHandler({ path })
     should.exist(result1.cacheId)
     should.exist(result1.lastModified)
 
     yield touch(file, {}).then(() => timeout(100))
-    let result2 = yield cacheHandler({ path })
+    const result2 = yield cacheHandler({ path })
 
     should.equal(result1.cacheId, result2.cacheId)
 
@@ -91,10 +91,10 @@ describe('file component test', () => {
   }))
 
   it('list path handler test', async(function*() {
-    let listPathHandler = yield listDirPathHandler()
+    const listPathHandler = yield listDirPathHandler()
       .loadHandler({dirPath})
 
-    var { subpaths: files } = yield listPathHandler(
+    let { subpaths: files } = yield listPathHandler(
       { path: '/' })
 
     should.equal(files.length, 3)
@@ -102,7 +102,7 @@ describe('file component test', () => {
     should.equal(files[1], '01.txt')
     should.equal(files[2], 'subdir')
 
-    var { subpaths: files } = yield listPathHandler(
+    ;({ subpaths: files }) = yield listPathHandler(
       { path: 'subdir' })
 
     should.equal(files.length, 2)
@@ -111,30 +111,30 @@ describe('file component test', () => {
   }))
 
   it('single file handler', async(function*() {
-    let filePath = testFiles[1]
-    let expected = expectedResults[1]
+    const filePath = testFiles[1]
+    const expected = expectedResults[1]
 
-    let component = singleFileHandler()
+    const component = singleFileHandler()
       .setLoader(simpleHandlerLoader('void', 'text'))
 
-    let handler = yield component.loadHandler({filePath})
+    const handler = yield component.loadHandler({filePath})
 
     yield handler({path:'/random'})
       .should.eventually.equal(expected)
   }))
 
   it('router test', async(function*() {
-    let filePath = testFiles[1]
-    let expected = expectedResults[1]
+    const filePath = testFiles[1]
+    const expected = expectedResults[1]
 
-    let router = createRouter()
+    const router = createRouter()
       .staticRoute('/static-file', singleFileHandler())
       .paramRoute('/api/:restpath', fileHandler())
       .setLoader(simpleHandlerLoader('void', 'text'))
 
-    let config = { filePath, dirPath }
+    const config = { filePath, dirPath }
     
-    let handler = yield router.loadHandler(config)
+    const handler = yield router.loadHandler(config)
 
     yield handler({path: '/static-file'})
       .should.eventually.equal(expected)
@@ -144,13 +144,13 @@ describe('file component test', () => {
   }))
 
   it('index path handler test', async(function*() {
-    let privateTable = { }
+    const privateTable = { }
 
-    let component = fileHandler(privateTable)
+    const component = fileHandler(privateTable)
       .middleware(indexFileFilter(privateTable))
       .setLoader(simpleHandlerLoader('void', 'text'))
 
-    let handler = yield component.loadHandler({dirPath})
+    const handler = yield component.loadHandler({dirPath})
     
     yield handler({path: '/subdir'})
       .should.eventually.equal(expectedResults[3])

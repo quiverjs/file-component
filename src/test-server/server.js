@@ -2,12 +2,12 @@ import { join as joinPath } from 'path'
 import { startServer } from 'quiver-core/http'
 import { fileBundle } from '../lib/file-component.js'
 
-var config = {
+const config = {
   dirPath: './test-content',
   serverListen: 8080
 }
 
-var { 
+const { 
   fileHandler,
   indexFileFilter
 } = fileBundle()

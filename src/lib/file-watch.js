@@ -1,11 +1,11 @@
 import { configMiddleware } from 'quiver-core/component'
 
 import chokidar from 'chokidar'
-let { watch: watchFile } = chokidar
+const { watch: watchFile } = chokidar
 
-export let watchFileMiddleware = configMiddleware(
+export const watchFileMiddleware = configMiddleware(
 config => {
-  let dirPath = config.dirPath
+  const dirPath = config.dirPath
   config.fileEvents = watchFile(dirPath)
 
   return config
@@ -14,5 +14,5 @@ config => {
   repeat: 'once'
 })
 
-export let makeWatchFileMiddleware = 
+export const makeWatchFileMiddleware = 
   watchFileMiddleware.factory()

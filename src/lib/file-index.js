@@ -6,35 +6,35 @@ import { error } from 'quiver-core/error'
 import { async } from 'quiver-core/promise'
 
 import pathLib from 'path'
-let { join: joinPath } = pathLib
+const { join: joinPath } = pathLib
 
 import { fileStatsFilter } from './file-stats'
 import { listDirPathHandler } from './list-dir'
 
-let defaultIndexes = ['index.html']
+const defaultIndexes = ['index.html']
 
-let getIndexFile = (indexNames, files) => {
+const getIndexFile = (indexNames, files) => {
   for(let i=0; i<indexNames.length; i++) {
-    let indexName = indexNames[i]
-    let index = files.indexOf(indexName)
+    const indexName = indexNames[i]
+    const index = files.indexOf(indexName)
     if(index > -1) return indexName
   }
 
   return null
 }
 
-export let indexFileFilter = argsBuilderFilter((config) => {
-  let {
+export const indexFileFilter = argsBuilderFilter((config) => {
+  const {
     indexFiles = defaultIndexes,
     listPathHandler 
   } = config
 
   return async(function*(args) {
-    let { path, filePath, fileStats } = args
+    const { path, filePath, fileStats } = args
     if(!fileStats.isDirectory) return args
 
-    let { subpaths } = yield listPathHandler({path})
-    let indexFile = getIndexFile(indexFiles, subpaths)
+    const { subpaths } = yield listPathHandler({path})
+    const indexFile = getIndexFile(indexFiles, subpaths)
 
     if(!indexFile) throw error(404, 'Not Found')
 
@@ -49,5 +49,5 @@ export let indexFileFilter = argsBuilderFilter((config) => {
   listDirPathHandler, 'listPathHandler'))
 .middleware(fileStatsFilter)
 
-export let makeIndexFileFilter = indexFileFilter
+export const makeIndexFileFilter = indexFileFilter
   .factory()
