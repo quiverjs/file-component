@@ -1,5 +1,3 @@
-import 'quiver-core/traceur'
-
 import { join as joinPath } from 'path'
 import { startServer } from 'quiver-core/http'
 import { fileBundle } from '../lib/file-component.js'
