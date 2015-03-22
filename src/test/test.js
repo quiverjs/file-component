@@ -4,17 +4,17 @@ const { readFileSync } = fs
 import pathLib from 'path'
 const { join: joinPath } = pathLib
 
-import { async, promisify, timeout } from 'quiver-core/promise'
-import { streamToSimpleHandler } from 'quiver-core/simple-handler'
+import { async, promisify, timeout } from 'quiver/promise'
+import { streamToSimpleHandler } from 'quiver/simple-handler'
 
 import { 
   simpleHandlerLoader,
   router as createRouter
-} from 'quiver-core/component'
+} from 'quiver/component'
 
 import { 
   streamableToText, emptyStreamable 
-} from 'quiver-core/stream-util'
+} from 'quiver/stream-util'
 
 import { 
   fileHandler, fileCacheHandler, 

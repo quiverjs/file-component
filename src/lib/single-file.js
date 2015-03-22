@@ -1,8 +1,8 @@
-import { error } from 'quiver-core/error'
-import { promisify, reject } from 'quiver-core/promise'
+import { error } from 'quiver/error'
+import { promisify, reject } from 'quiver/promise'
 import { 
   argsFilter, configMiddleware, extendHandler 
-} from 'quiver-core/component'
+} from 'quiver/component'
 
 import { makeFileHandler } from './file-handler'
 

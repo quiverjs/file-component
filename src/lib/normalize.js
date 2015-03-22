@@ -1,4 +1,4 @@
-import { argsFilter } from 'quiver-core/component'
+import { argsFilter } from 'quiver/component'
 
 import pathLib from 'path'
 const { normalize } = pathLib

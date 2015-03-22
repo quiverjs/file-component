@@ -1,6 +1,6 @@
 import { 
   simpleHandler,
-} from 'quiver-core/component'
+} from 'quiver/component'
 
 import crypto from 'crypto'
 const { createHash } = crypto

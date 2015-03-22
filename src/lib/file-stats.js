@@ -1,8 +1,8 @@
-import { error } from 'quiver-core/error'
+import { error } from 'quiver/error'
 
 import { 
   resolve, reject, promisify, createPromise 
-} from 'quiver-core/promise'
+} from 'quiver/promise'
 
 import fs from 'fs'
 const { exists, stat } = fs
@@ -14,7 +14,7 @@ import {
   argsBuilderFilter,
   simpleHandlerBuilder, 
   inputHandlerMiddleware
-} from 'quiver-core/component'
+} from 'quiver/component'
 
 import { watchFileMiddleware } from './file-watch'
 import { normalizePathFilter } from './normalize'

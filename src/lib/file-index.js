@@ -1,9 +1,9 @@
 import { 
   argsBuilderFilter, inputHandlerMiddleware 
-} from 'quiver-core/component'
+} from 'quiver/component'
 
-import { error } from 'quiver-core/error'
-import { async } from 'quiver-core/promise'
+import { error } from 'quiver/error'
+import { async } from 'quiver/promise'
 
 import pathLib from 'path'
 const { join: joinPath } = pathLib

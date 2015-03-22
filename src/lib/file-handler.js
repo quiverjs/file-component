@@ -1,9 +1,9 @@
-import { error } from 'quiver-core/error'
-import { reject } from 'quiver-core/promise'
-import { fileStreamable } from 'quiver-core/file-stream'
+import { error } from 'quiver/error'
+import { reject } from 'quiver/promise'
+import { fileStreamable } from 'quiver/file-stream'
 import { 
   simpleHandlerBuilder, inputHandlerMiddleware 
-} from 'quiver-core/component'
+} from 'quiver/component'
 
 import { contentTypeFilter } from './mime-filter'
 import { fileStatsFilter } from './file-stats'

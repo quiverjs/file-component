@@ -1,9 +1,9 @@
-import { simpleHandler } from 'quiver-core/component'
-import { reject, promisify } from 'quiver-core/promise'
+import { simpleHandler } from 'quiver/component'
+import { reject, promisify } from 'quiver/promise'
 import {
   simpleHandlerBuilder, inputHandlerMiddleware,
   loadStreamHandler 
-} from 'quiver-core/component'
+} from 'quiver/component'
 
 import fs from 'fs'
 const { readdir } = fs

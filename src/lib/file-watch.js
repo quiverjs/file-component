@@ -1,4 +1,4 @@
-import { configMiddleware } from 'quiver-core/component'
+import { configMiddleware } from 'quiver/component'
 
 import chokidar from 'chokidar'
 const { watch: watchFile } = chokidar

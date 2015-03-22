@@ -1,6 +1,6 @@
 import mime from 'mime'
-import { async } from 'quiver-core/promise'
-import { streamFilter } from 'quiver-core/component'
+import { async } from 'quiver/promise'
+import { streamFilter } from 'quiver/component'
 
 export const contentTypeFilter = streamFilter(
 (config, handler) =>

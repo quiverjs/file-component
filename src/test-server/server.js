@@ -1,5 +1,5 @@
 import { join as joinPath } from 'path'
-import { startServer } from 'quiver-core/http'
+import { startServer } from 'quiver/http'
 import { fileBundle } from '../lib/file-component.js'
 
 const config = {
