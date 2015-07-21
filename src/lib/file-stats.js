@@ -1,7 +1,7 @@
 import { error } from 'quiver/error'
 
-import { 
-  resolve, reject, promisify, createPromise 
+import {
+  resolve, reject, promisify, createPromise
 } from 'quiver/promise'
 
 import fs from 'fs'
@@ -10,9 +10,9 @@ const { exists, stat } = fs
 import pathLib from 'path'
 const { join: joinPath } = pathLib
 
-import { 
+import {
   argsBuilderFilter,
-  simpleHandlerBuilder, 
+  simpleHandlerBuilder,
   inputHandlerMiddleware
 } from 'quiver/component'
 
@@ -29,11 +29,11 @@ const fileStatsToJson = (filePath, stats) => ({
   isFile: stats.isFile(),
   isDirectory: stats.isDirectory(),
   isSocket: stats.isSocket(),
-  dev: stats.dev, 
-  ino: stats.ino, 
-  mode: stats.mode, 
-  nlink: stats.nlink, 
-  uid: stats.uid, 
+  dev: stats.dev,
+  ino: stats.ino,
+  mode: stats.mode,
+  nlink: stats.nlink,
+  uid: stats.uid,
   gid: stats.gid,
   rdev: stats.rdev,
   size: stats.size,
@@ -48,8 +48,8 @@ export const fileStatsHandler = simpleHandlerBuilder(
 config => {
   const { dirPath, fileEvents, cacheInterval=300*1000 } = config
 
-  const statsCache = { }
-  const notFoundCache = { }
+  let statsCache = { }
+  let notFoundCache = { }
 
   setInterval(() => {
     statsCache = { }
@@ -74,10 +74,10 @@ config => {
     const { path='.' } = args
     const filePath = joinPath(dirPath, path)
 
-    if(statsCache[filePath]) 
+    if(statsCache[filePath])
       return resolve(statsCache[filePath])
 
-    if(notFoundCache[filePath]) 
+    if(notFoundCache[filePath])
       return reject(error(404, 'file not found'))
 
     return fileExists(filePath).then(exists => {
@@ -126,8 +126,8 @@ config => {
 })
 .middleware(fileStatsMiddleware)
 
-export const makeFileStatsHandler = 
+export const makeFileStatsHandler =
   fileStatsHandler.factory()
 
-export const makeFileStatsFilter = 
+export const makeFileStatsFilter =
   fileStatsFilter.factory()
