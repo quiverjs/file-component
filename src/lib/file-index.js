@@ -1,12 +1,9 @@
-import { 
-  argsBuilderFilter, inputHandlerMiddleware 
-} from 'quiver/component'
+import { join as joinPath } from 'path'
 
-import { error } from 'quiver/error'
-import { async } from 'quiver/promise'
-
-import pathLib from 'path'
-const { join: joinPath } = pathLib
+import { error } from 'quiver-core/util/error'
+import { createArgs } from 'quiver-core/component/util'
+import { inputHandler } from 'quiver-core/component/method'
+import { argsBuilderFilter } from 'quiver-core/component/constructor'
 
 import { fileStatsFilter } from './file-stats'
 import { listDirPathHandler } from './list-dir'
@@ -23,31 +20,32 @@ const getIndexFile = (indexNames, files) => {
   return null
 }
 
-export const indexFileFilter = argsBuilderFilter((config) => {
-  const {
-    indexFiles = defaultIndexes,
-    listPathHandler 
-  } = config
+export const indexFileFilter = argsBuilderFilter(
+  config => {
+    const indexFiles = config.get('indexFiles') || defaultIndexes
+    const listPathHandler = config.get('listPathHandler')
 
-  return async(function*(args) {
-    const { path, filePath, fileStats } = args
-    if(!fileStats.isDirectory) return args
+    return async function(args) {
+      const path = args.get('path')
+      const filePath = args.get('filePath')
+      const fileStats = args.get('fileStats')
 
-    const { subpaths } = yield listPathHandler({path})
-    const indexFile = getIndexFile(indexFiles, subpaths)
+      if(!fileStats.isDirectory) return args
 
-    if(!indexFile) throw error(404, 'Not Found')
+      const inArgs = createArgs({ path })
+      const { subpaths } = await listPathHandler(inArgs)
 
-    args.path = joinPath(path, indexFile)
-    args.filePath = joinPath(filePath, indexFile)
-    args.fileStats = null
+      const indexFile = getIndexFile(indexFiles, subpaths)
 
-    return args
+      if(!indexFile) throw error(404, 'Not Found')
+
+      return args
+        .delete('fileStats')
+        .set('path', joinPath(path, indexFile))
+        .set('filePath', joinPath(filePath, indexFile))
+    }
   })
-})
-.middleware(inputHandlerMiddleware(
-  listDirPathHandler, 'listPathHandler'))
-.middleware(fileStatsFilter)
+  ::inputHandler('listPathHandler', listDirPathHandler)
+  .addMiddleware(fileStatsFilter)
 
-export const makeIndexFileFilter = indexFileFilter
-  .factory()
+export const makeIndexFileFilter = indexFileFilter.export()

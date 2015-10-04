@@ -1,13 +1,16 @@
-import { makeFileHandler } from './file-handler'
-import { makeFileStatsHandler } from './file-stats'
-import { makeFileCacheHandler } from './file-cache'
-import { makeListDirPathHandler } from './list-dir'
-import { makeIndexFileFilter } from './file-index'
+import { MapComponent } from 'quiver-core/component'
 
-export const makeFileBundle = (forkTable={}) => ({
-  fileHandler: makeFileHandler(forkTable),
-  fileStatsHandler: makeFileStatsHandler(forkTable),
-  fileCacheHandler: makeFileCacheHandler(forkTable),
-  listDirPathHandler: makeListDirPathHandler(forkTable),
-  indexFileFilter: makeIndexFileFilter(forkTable)
-})
+import { fileHandler } from './file-handler'
+import { fileStatsHandler } from './file-stats'
+import { fileCacheHandler } from './file-cache'
+import { listDirPathHandler } from './list-dir'
+import { indexFileFilter } from './file-index'
+
+const fileBundle = new MapComponent()
+  .setComponent('fileHandler', fileHandler)
+  .setComponent('fileStatsHandler', fileStatsHandler)
+  .setComponent('fileCacheHandler', fileCacheHandler)
+  .setComponent('listDirPathHandler', listDirPathHandler)
+  .setComponent('indexFileFilter', indexFileFilter)
+
+export const makeFileBundle = fileBundle.export()

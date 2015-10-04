@@ -1,20 +1,15 @@
-import { argsFilter } from 'quiver/component'
+import { normalize } from 'path'
+import { argsFilter } from 'quiver-core/component/constructor'
 
-import pathLib from 'path'
-const { normalize } = pathLib
-
-const normalized = Symbol('pathNormalized')
+const $normalized = Symbol('@normalized')
 
 export const normalizePathFilter = argsFilter(
-args => {
-  if(args[normalized]) return args
+  args => {
+    if(args.get($normalized)) return args
 
-  const { path='/' } = args
+    const path = args.get('path') || '/'
 
-  args[normalized] = true
-  args.path = normalize(path)
-
-  return args
-}, {
-  name: 'Quiver Normalize Path Filter',
-})
+    return args
+      .set('path', normalize(path))
+      .set($normalized, true)
+  })

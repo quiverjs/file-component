@@ -1,18 +1,16 @@
-import { configMiddleware } from 'quiver/component'
+import { configMiddleware } from 'quiver-core/component/constructor'
 
-import chokidar from 'chokidar'
-const { watch: watchFile } = chokidar
+import { watch as watchFile } from 'chokidar'
 
 export const watchFileMiddleware = configMiddleware(
-config => {
-  const dirPath = config.dirPath
-  config.fileEvents = watchFile(dirPath)
+  config => {
+    if(config.has('fileEvents')) return config
 
-  return config
-}, {
-  name: 'Quiver Watch File Middleware',
-  repeat: 'once'
-})
+    const dirPath = config.get('dirPath')
+    const fileEvents = watchFile(dirPath)
 
-export const makeWatchFileMiddleware = 
-  watchFileMiddleware.factory()
+    return config.set('fileEvents', fileEvents)
+  })
+  .setName('watchFileMiddleware')
+
+export const makeWatchFileMiddleware = watchFileMiddleware.export()

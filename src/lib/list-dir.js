@@ -1,12 +1,9 @@
-import { simpleHandler } from 'quiver/component'
-import { reject, promisify } from 'quiver/promise'
+import { readdir } from 'fs'
+import { error } from 'quiver-core/util/error'
+import { promisify } from 'quiver-core/util/promise'
 import {
-  simpleHandlerBuilder, inputHandlerMiddleware,
-  loadStreamHandler 
-} from 'quiver/component'
-
-import fs from 'fs'
-const { readdir } = fs
+  simpleHandlerBuilder
+} from 'quiver-core/component/constructor'
 
 import { fileStatsFilter } from './file-stats'
 import { watchFileMiddleware } from './file-watch'
@@ -14,43 +11,46 @@ import { watchFileMiddleware } from './file-watch'
 const readDirectory = promisify(readdir)
 
 export const listDirPathHandler = simpleHandlerBuilder(
-config => {
-  const { fileEvents, cacheInterval=300*1000 } = config
+  config => {
+    const fileEvents = config.get('fileEvents')
+    const cacheInterval = config.get('cacheInterval') || 300*1000
 
-  const dirCache = { }
+    const dirCache = new Map()
 
-  setInterval(() => {
-    dirCache = { }
-  },  cacheInterval)
+    setInterval(() => {
+      dirCache.clear()
+    },  cacheInterval)
 
-  const removeCache = (filePath, fileStats) => {
-    if(fileStats.isDirectory())
-      dirCache[filePath] = null
-  }
+    const removeCache = (filePath, fileStats) => {
+      if(fileStats.isDirectory())
+        dirCache.delete(filePath)
+    }
 
-  fileEvents.on('change', removeCache)
-  fileEvents.on('addDir', removeCache)
-  fileEvents.on('unlinkDir', removeCache)
+    fileEvents.on('change', removeCache)
+    fileEvents.on('addDir', removeCache)
+    fileEvents.on('unlinkDir', removeCache)
 
-  return args => {
-    const { filePath, fileStats } = args
+    return async function(args) {
+      const filePath = args.get('filePath')
+      const fileStats = args.get('fileStats')
 
-    if(!fileStats.isDirectory)
-      return reject(error(404, 'path is not a directory'))
+      if(!fileStats.isDirectory)
+        throw error(404, 'path is not a directory')
 
-    const subpaths = dirCache[filePath]
-    if(subpaths) return resolve({subpaths})
+      const cachedPaths = dirCache.get(filePath)
+      if(cachedPaths) return { subpaths: cachedPaths }
 
-    return readDirectory(filePath).then(subpaths => {
-      dirCache[filePath] = subpaths
-      return {subpaths}
-    })
-  }
-}, 'void', 'json', {
-  name: 'Quiver List Directory Path Handler'
-})
-.middleware(watchFileMiddleware)
-.middleware(fileStatsFilter)
+      const subpaths = await readDirectory(filePath)
+      dirCache.set(filePath, subpaths)
 
-export const makeListDirPathHandler = 
-  listDirPathHandler.factory()
+      return { subpaths }
+    }
+  }, {
+    inputType: 'empty',
+    outputType: 'json'
+  })
+  .setName('listDirPathHandler')
+  .addMiddleware(watchFileMiddleware)
+  .addMiddleware(fileStatsFilter)
+
+export const makeListDirPathHandler = listDirPathHandler.export()

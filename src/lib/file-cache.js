@@ -1,9 +1,5 @@
-import { 
-  simpleHandler,
-} from 'quiver/component'
-
-import crypto from 'crypto'
-const { createHash } = crypto
+import { createHash } from 'crypto'
+import { simpleHandler } from 'quiver-core/component/constructor'
 
 import { fileStatsFilter } from './file-stats'
 
@@ -14,18 +10,19 @@ const hash = string => {
 }
 
 export const fileCacheHandler = simpleHandler(
-args => {
-  const { filePath, fileStats } = args
+  args => {
+    const filePath = args.get('filePath')
+    const fileStats = args.get('fileStats')
 
-  const cacheId = hash(filePath)
-  const lastModified = fileStats.mtime
+    const cacheId = hash(filePath)
+    const lastModified = fileStats.mtime
 
-  return {
-    cacheId, lastModified
-  }
+    return { cacheId, lastModified }
 
-}, 'void', 'json')
-.middleware(fileStatsFilter)
+  }, {
+    inputType: 'empty',
+    outputType: 'json'
+  })
+  .addMiddleware(fileStatsFilter)
 
-export const makeFileCacheHandler = 
-  fileCacheHandler.factory()
+export const makeFileCacheHandler = fileCacheHandler.export()

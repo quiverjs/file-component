@@ -1,25 +1,19 @@
-import { error } from 'quiver/error'
+import { exists, stat } from 'fs'
+import { join as joinPath } from 'path'
+import { error } from 'quiver-core/util/error'
+import { createArgs } from 'quiver-core/component/util'
+import { inputHandler } from 'quiver-core/component/method'
+import { promisify, createPromise } from 'quiver-core/util/promise'
 
 import {
-  resolve, reject, promisify, createPromise
-} from 'quiver/promise'
-
-import fs from 'fs'
-const { exists, stat } = fs
-
-import pathLib from 'path'
-const { join: joinPath } = pathLib
-
-import {
-  argsBuilderFilter,
-  simpleHandlerBuilder,
-  inputHandlerMiddleware
-} from 'quiver/component'
+  argsBuilderFilter, simpleHandlerBuilder,
+} from 'quiver-core/component/constructor'
 
 import { watchFileMiddleware } from './file-watch'
 import { normalizePathFilter } from './normalize'
 
 const statFile = promisify(stat)
+
 const fileExists = filePath =>
   createPromise(resolve =>
     exists(filePath, resolve))
@@ -45,89 +39,85 @@ const fileStatsToJson = (filePath, stats) => ({
 })
 
 export const fileStatsHandler = simpleHandlerBuilder(
-config => {
-  const { dirPath, fileEvents, cacheInterval=300*1000 } = config
+  config => {
+    const dirPath = config.get('dirPath')
+    const fileEvents = config.get('fileEvents')
+    const cacheInterval = config.get('cacheInterval') || 300*1000
 
-  let statsCache = { }
-  let notFoundCache = { }
+    let statsCache = new Map()
+    let notFoundCache = new Set()
 
-  setInterval(() => {
-    statsCache = { }
-    notFoundCache = { }
-  },  cacheInterval)
+    setInterval(() => {
+      statsCache.clear()
+      notFoundCache.clear()
+    },  cacheInterval)
 
-  fileEvents.on('change', (filePath, fileStats) => {
-    statsCache[filePath] = fileStatsToJson(filePath, fileStats)
-  })
+    fileEvents.on('change', (filePath, fileStats) => {
+      statsCache.set(filePath, fileStatsToJson(filePath, fileStats))
+    })
 
-  fileEvents.on('add', (filePath, fileStats) => {
-    statsCache[filePath] = fileStatsToJson(filePath, fileStats)
-    notFoundCache[filePath] = false
-  })
+    fileEvents.on('add', (filePath, fileStats) => {
+      statsCache.set(filePath, fileStatsToJson(filePath, fileStats))
+      notFoundCache.delete(filePath)
+    })
 
-  fileEvents.on('unlink', filePath => {
-    statsCache[filePath] = null
-    notFoundCache[filePath] = true
-  })
+    fileEvents.on('unlink', filePath => {
+      statsCache.delete(filePath)
+      notFoundCache.add(filePath)
+    })
 
-  return args => {
-    const { path='.' } = args
-    const filePath = joinPath(dirPath, path)
+    return async function(args) {
+      const path = args.get('path') || '.'
+      const filePath = joinPath(dirPath, path)
 
-    if(statsCache[filePath])
-      return resolve(statsCache[filePath])
+      if(statsCache.has(filePath))
+        return statsCache.get(filePath)
 
-    if(notFoundCache[filePath])
-      return reject(error(404, 'file not found'))
+      if(notFoundCache.has(filePath))
+        throw error(404, 'file not found')
 
-    return fileExists(filePath).then(exists => {
+      const exists = await fileExists(filePath)
       if(!exists) {
-        notFoundCache[filePath] = true
-        return reject(error(404, 'file not found'))
+        notFoundCache.add(filePath)
+        throw error(404, 'file not found')
       }
 
-      return statFile(filePath).then(stats => {
-        const fileStats = fileStatsToJson(filePath, stats)
+      const stats = await statFile(filePath)
+      const fileStats = fileStatsToJson(filePath, stats)
 
-        statsCache[filePath] = fileStats
+      statsCache.set(filePath, fileStats)
 
-        return fileStats
-      })
-    })
-  }
+      return fileStats
+    }
 
-}, 'void', 'json', {
-  name: 'Quiver File Stats Handler'
-})
-.addMiddleware(watchFileMiddleware)
-.addMiddleware(normalizePathFilter)
-
-export const fileStatsMiddleware = inputHandlerMiddleware(
-  fileStatsHandler, 'getFileStats')
+  }, {
+    inputType: 'empty',
+    outputType: 'json'
+  })
+  .setName('fileStatsHandler')
+  .addMiddleware(watchFileMiddleware)
+  .addMiddleware(normalizePathFilter)
 
 export const fileStatsFilter = argsBuilderFilter(
-config => {
-  const { dirPath, getFileStats } = config
+  config => {
+    const getFileStats = config.get('getFileStats')
 
-  return args => {
-    const { path } = args
+    return async function(args) {
+      const path = args.get('path')
 
-    if(args.filePath && args.fileStats) return args
+      if(args.get('filePath') && args.get('fileStats'))
+        return args
 
-    return getFileStats({ path }).then(fileStats => {
-      args.filePath = fileStats.filePath
-      args.fileStats = fileStats
+      const inArgs = createArgs({ path })
+      const fileStats = await getFileStats(inArgs)
 
       return args
-    })
-  }
-}, {
-  name: 'Quiver File Stats Filter'
-})
-.middleware(fileStatsMiddleware)
+        .set('fileStats', fileStats)
+        .set('filePath', fileStats.filePath)
+    }
+  })
+  .setName('fileStatsFilter')
+  ::inputHandler('getFileStats', fileStatsHandler)
 
-export const makeFileStatsHandler =
-  fileStatsHandler.factory()
-
-export const makeFileStatsFilter =
-  fileStatsFilter.factory()
+export const makeFileStatsFilter = fileStatsFilter.export()
+export const makeFileStatsHandler = fileStatsHandler.export()
