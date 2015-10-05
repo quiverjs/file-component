@@ -170,9 +170,12 @@ test('file component test', assert => {
     assert.equal(result, expectedResults[3])
 
     assert.end()
-
-    process.exit()
   })
 
   assert.end()
+})
+
+test('teardown', assert => {
+  assert.end()
+  process.exit()
 })
