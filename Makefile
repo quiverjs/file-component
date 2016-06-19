@@ -1,7 +1,7 @@
 build: src
-	babel src --out-dir out
+	babel --presets 'quiver-babel/node-preset' --out-dir out src
 
 test: build
-	tape out/test
+	node out/test
 
 .PHONY: build test
