@@ -1,20 +1,20 @@
 import { join as joinPath } from 'path'
-import { startServer } from 'quiver/http'
-import { fileBundle } from '../lib/file-component.js'
+import { startServer } from 'quiver-core/http'
+import { createConfig } from 'quiver-core/component/util'
+import { fileBundle } from '../lib/constructor'
 
-const config = {
+const config = createConfig({
   dirPath: './test-content',
   serverListen: 8080
-}
+})
 
-const { 
-  fileHandler,
-  indexFileFilter
-} = fileBundle()
+const fileComponents = fileBundle()
+const fileHandler = fileComponents.getComponent('fileHandler')
+const indexFileFilter = fileComponents.getComponent('indexFileFilter')
 
-fileHandler.middleware(indexFileFilter)
+fileHandler.addMiddleware(indexFileFilter)
 
-startServer(fileHandler, config)
+startServer(config, fileHandler)
 .then(server => {
   console.log('simple file server running at port 8080...')
 })
