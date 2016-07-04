@@ -1,4 +1,3 @@
-import { join as joinPath } from 'path'
 import { startServer } from 'quiver-core/http'
 import { createConfig } from 'quiver-core/component/util'
 import { fileBundle } from '../lib/constructor'

@@ -1,4 +1,4 @@
-import { readdir } from 'fs'
+import { readdir, stat } from 'fs'
 import { error } from 'quiver-core/util/error'
 import { promisify } from 'quiver-core/util/promise'
 import {
@@ -8,6 +8,7 @@ import {
 import { fileStatsFilter } from './file-stats'
 import { watchFileMiddleware } from './file-watch'
 
+const statFile = promisify(stat)
 const readDirectory = promisify(readdir)
 
 export const listDirPathHandler = simpleHandlerBuilder(
