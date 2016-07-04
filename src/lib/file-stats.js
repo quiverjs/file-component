@@ -52,11 +52,17 @@ export const fileStatsHandler = simpleHandlerBuilder(
       notFoundCache.clear()
     },  cacheInterval)
 
-    fileEvents.on('change', (filePath, fileStats) => {
+    fileEvents.on('change', async (filePath, fileStats) => {
+      if(!fileStats)
+        fileStats = await statFile(filePath)
+
       statsCache.set(filePath, fileStatsToJson(filePath, fileStats))
     })
 
-    fileEvents.on('add', (filePath, fileStats) => {
+    fileEvents.on('add', async (filePath, fileStats) => {
+      if(!fileStats)
+        fileStats = await statFile(filePath)
+
       statsCache.set(filePath, fileStatsToJson(filePath, fileStats))
       notFoundCache.delete(filePath)
     })
