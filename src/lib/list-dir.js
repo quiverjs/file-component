@@ -21,7 +21,10 @@ export const listDirPathHandler = simpleHandlerBuilder(
       dirCache.clear()
     },  cacheInterval)
 
-    const removeCache = (filePath, fileStats) => {
+    const removeCache = async (filePath, fileStats) => {
+      if(!fileStats)
+        fileStats = await statFile(filePath)
+
       if(fileStats.isDirectory())
         dirCache.delete(filePath)
     }
