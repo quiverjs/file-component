@@ -12,7 +12,7 @@ const statFile = promisify(stat)
 
 const singleFilePathFilter = argsFilter(
   args =>
-    args.set('path', '.'))
+    args.set('path', '/'))
 
 const singleFileMiddleware = configMiddleware(
   async function(config) {
